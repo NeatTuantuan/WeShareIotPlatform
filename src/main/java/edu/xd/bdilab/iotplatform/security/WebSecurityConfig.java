@@ -1,6 +1,7 @@
 package edu.xd.bdilab.iotplatform.security;
 
 import edu.xd.bdilab.iotplatform.controller.security.handler.*;
+import edu.xd.bdilab.iotplatform.service.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

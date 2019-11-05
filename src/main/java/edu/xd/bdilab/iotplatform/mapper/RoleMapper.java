@@ -2,8 +2,10 @@ package edu.xd.bdilab.iotplatform.mapper;
 
 import edu.xd.bdilab.iotplatform.dao.Role;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 @Mapper
+@Component
 public interface RoleMapper {
     Role findRoleById(int role_id);
     /**

@@ -2,6 +2,7 @@ package edu.xd.bdilab.iotplatform.service;
 
 import edu.xd.bdilab.iotplatform.dao.Role;
 import edu.xd.bdilab.iotplatform.mapper.RoleMapper;
+import edu.xd.bdilab.iotplatform.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

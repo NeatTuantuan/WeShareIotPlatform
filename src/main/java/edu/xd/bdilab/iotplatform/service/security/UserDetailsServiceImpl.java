@@ -1,4 +1,4 @@
-package edu.xd.bdilab.iotplatform.service;
+package edu.xd.bdilab.iotplatform.service.security;
 
 import edu.xd.bdilab.iotplatform.mapper.RoleMapper;
 import edu.xd.bdilab.iotplatform.mapper.UserMapper;
