@@ -11,6 +11,19 @@
     <result column="fk_user_id" jdbcType="INTEGER" property="fkUserId" />
     <result column="fk_role_id" jdbcType="INTEGER" property="fkRoleId" />
   </resultMap>
+
+  <select id="selectRoleIdByUserId" parameterType="int" resultType="java.lang.Integer">
+        select
+         fk_role_id as role_id
+     from user_role_relation WHERE fk_user_id=#{user_id}
+  </select>
+
+
+
+
+
+
+
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbggenerated
