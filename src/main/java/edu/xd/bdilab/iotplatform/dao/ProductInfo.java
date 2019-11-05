@@ -3,7 +3,7 @@ package edu.xd.bdilab.iotplatform.dao;
 import lombok.Data;
 
 import java.util.Date;
-@DataS
+@Data
 public class ProductInfo {
     /**
      * 产品id，主键
