@@ -1,9 +1,11 @@
 package edu.xd.bdilab.iotplatform.dao;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.Date;
 @Data
+@ToString
 public class ProductInfo {
     /**
      * 产品id，主键

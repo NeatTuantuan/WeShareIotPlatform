@@ -64,8 +64,9 @@ public class DeviceServiceImplTest {
     @Test
     public void updateDeviceInfo() {
         DeviceInfo deviceInfo = deviceService.selectById("2");
-        deviceInfo.setGetwayId("192.168.0.111");
+        deviceInfo.setGetwayId("192.168.0.131");
         int res = deviceService.updateDeviceInfo(deviceInfo);
+        System.out.println(res);
         Assert.assertEquals(1,res);
     }
 

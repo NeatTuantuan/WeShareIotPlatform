@@ -13,35 +13,35 @@ public interface DeviceService {
     List<DeviceInfo> getDeviceByProduct(String fkProductId);
 
     /**
-     * 添加产品
+     * 添加设备
      * @param deviceInfo
      * @return
      */
     int insertSelective(DeviceInfo deviceInfo);
 
     /**
-     * 删除产品
+     * 删除设备
      * @param deviceId
      * @return
      */
     int deleteByPrimaryKey(String deviceId);
 
     /**
-     * 查询某一产品
+     * 通过设备id查询某一设备
      * @param deviceId
      * @return
      */
     DeviceInfo selectById(String deviceId);
 
     /**
-     * 修改产品
+     * 更新设备
      * @param deviceInfo
      * @return
      */
     int updateDeviceInfo(DeviceInfo deviceInfo);
 
     /**
-     * 根据设备名称查找设备
+     * 根据设备名称查找所有设备(模糊查询)
      * @param name
      * @return
      */
