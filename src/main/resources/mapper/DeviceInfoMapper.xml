@@ -16,16 +16,22 @@
     -->
     device_id, fk_product_id, device_name, create_time, getway_id
   </sql>
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from device_info
     where device_id = #{deviceId,jdbcType=VARCHAR}
   </select>
+
+
   <select id="selectByProduct" parameterType="java.lang.String" resultMap="BaseResultMap">
     select * from device_info
     where fk_product_id = #{fkProductId}
   </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--
       WARNING - @mbggenerated
@@ -35,6 +41,8 @@
     delete from device_info
     where device_id = #{deviceId,jdbcType=VARCHAR}
   </delete>
+
+
   <insert id="insert" parameterType="edu.xd.bdilab.iotplatform.dao.DeviceInfo">
     <!--
       WARNING - @mbggenerated
@@ -46,6 +54,8 @@
     values (#{deviceId,jdbcType=VARCHAR}, #{fkProductId,jdbcType=VARCHAR}, #{deviceName,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=DATE}, #{getwayId,jdbcType=VARCHAR})
   </insert>
+
+
   <insert id="insertSelective" parameterType="edu.xd.bdilab.iotplatform.dao.DeviceInfo">
     <!--
       WARNING - @mbggenerated
@@ -88,6 +98,8 @@
       </if>
     </trim>
   </insert>
+
+
   <update id="updateByPrimaryKeySelective" parameterType="edu.xd.bdilab.iotplatform.dao.DeviceInfo">
     <!--
       WARNING - @mbggenerated
@@ -111,6 +123,8 @@
     </set>
     where device_id = #{deviceId,jdbcType=VARCHAR}
   </update>
+
+
   <update id="updateByPrimaryKey" parameterType="edu.xd.bdilab.iotplatform.dao.DeviceInfo">
     <!--
       WARNING - @mbggenerated
@@ -124,6 +138,8 @@
       getway_id = #{getwayId,jdbcType=VARCHAR}
     where device_id = #{deviceId,jdbcType=VARCHAR}
   </update>
+
+
   <select id="selectDeviceByName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select *
     from device_info
@@ -133,4 +149,6 @@
       </if>
     </where>
   </select>
+
+
 </mapper>

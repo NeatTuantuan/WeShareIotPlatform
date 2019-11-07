@@ -1,8 +1,10 @@
 package edu.xd.bdilab.iotplatform.dao;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class UserRoleRelation {
     /**
      * 用户角色关系id

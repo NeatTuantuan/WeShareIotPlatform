@@ -52,4 +52,11 @@ public interface ProductInfoMapper {
      * @return
      */
     List<ProductInfo> selectAllProductByKeyWord(String productName);
+
+    /**
+     * 根据产品名称查找产品
+     * @param productName
+     * @return
+     */
+    ProductInfo selectByProductName(String productName);
 }

@@ -45,5 +45,17 @@ public interface ProductService {
      */
     List<ProductInfo> getAllProductInfoByKeyWord(String keyWord);
 
+    /**
+     * 按产品id查询产品信息
+     */
+    ProductInfo selectByPrimaryKey(String productId);
+
+    /**
+     * 根据产品名称查找产品
+     * @param productName
+     * @return
+     */
+    ProductInfo selectByProductName(String productName);
+
 
 }

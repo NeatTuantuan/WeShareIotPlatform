@@ -1,5 +1,7 @@
 package edu.xd.bdilab.iotplatform.controller.response;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @ClassName ResponseResult
  * @Description TODO
@@ -8,6 +10,7 @@ package edu.xd.bdilab.iotplatform.controller.response;
  * @Version 1.0
  * @Attention Copyright (C)，2004-2019，BDILab，XiDian University
  **/
+@Component
 public class ResponseResult {
     /**
      * 后端返回给前端的数据

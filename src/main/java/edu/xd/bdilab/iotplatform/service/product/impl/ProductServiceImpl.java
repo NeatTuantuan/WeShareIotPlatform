@@ -57,5 +57,15 @@ public class ProductServiceImpl implements ProductService {
         return productInfoMapper.selectAllProductByKeyWord(keyWord);
     }
 
+    @Override
+    public ProductInfo selectByPrimaryKey(String productId) {
+        return productInfoMapper.selectByPrimaryKey(productId);
+    }
+
+    @Override
+    public ProductInfo selectByProductName(String productName) {
+        return productInfoMapper.selectByProductName(productName);
+    }
+
 
 }

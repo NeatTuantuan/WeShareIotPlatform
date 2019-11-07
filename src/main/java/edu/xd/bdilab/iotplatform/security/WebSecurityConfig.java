@@ -60,6 +60,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         HeaderWriterFilter headerWriterFilter = new HeaderWriterFilter(headerWriters);
         http.addFilter(headerWriterFilter);
 
+        http
+                .csrf().disable()
+//                .exceptionHandling()
+//                .authenticationEntryPoint(authenticationEntryPoint)
+//                .and()
+                .authorizeRequests()
+                .antMatchers("/login", "/assets/**", "/CSS/**", "/HTML/**", "/JavaScript/**").permitAll()
+                .anyRequest().permitAll();
+
+
+//                .anyRequest().authenticated()//其他URL需要身份认证
+//                .and()
+//
+//                .formLogin() //开启登录
+//                .successHandler(authenticationSuccessHandler)
+//                .loginPage("/login")
+//                .failureUrl("/login?error")
+//                .successForwardUrl("/index") //登录成功的URL
+//                .failureHandler(authenticationFailureHandler)
+//
+//                .permitAll()
+//                .and()
+//                .logout()
+//                .logoutSuccessHandler(logoutSuccessHandler)
+//                .permitAll();
 
 
     }
