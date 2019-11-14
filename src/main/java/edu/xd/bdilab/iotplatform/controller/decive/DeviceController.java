@@ -49,6 +49,7 @@ public class DeviceController {
             responseResult.setData(deviceInfoList);
             responseResult.setCode(DeviceCode.GET_DEVICE_FAILURE.getCode());
             responseResult.setMessage(DeviceCode.GET_DEVICE_FAILURE.getMessage());
+            responseResult.setSuccess(true);
         }
 
         responseResult.setData(deviceInfoList);
@@ -123,7 +124,12 @@ public class DeviceController {
     @PostMapping(value = "device/modifyDevice")
     @ApiOperation(value = "修改设备信息")
     public ResponseResult modifyDevice(@RequestBody DeviceInfo deviceInfo){
-        int temp = deviceService.updateDeviceInfo(deviceInfo);
+
+        DeviceInfo deviceInfoModify = deviceService.selectById(deviceInfo.getDeviceId());
+        deviceInfoModify.setGetwayId(deviceInfo.getGetwayId());
+        deviceInfoModify.setDeviceName(deviceInfo.getDeviceName());
+
+        int temp = deviceService.updateDeviceInfo(deviceInfoModify);
 
         if (temp == 1){
             responseResult.setSuccess(true);
