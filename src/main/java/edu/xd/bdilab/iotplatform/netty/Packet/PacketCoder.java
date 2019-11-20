@@ -9,8 +9,9 @@ import edu.xd.bdilab.iotplatform.netty.responsechain.THDecoder;
 import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 public class PacketCoder {
 
     public Packet decode (ByteBuf byteBuf, ChannelHandlerContext ctx){
@@ -72,21 +73,20 @@ public class PacketCoder {
     public void split (ByteBuf byteBuf, ChannelHandlerContext ctx) throws Exception{
         //定义数据库
         RedisUtil redisUtil = new RedisUtil();
-        HbaseUtil hbaseUtil = new HbaseUtil();
+//        HbaseUtil hbaseUtil = new HbaseUtil();
 
         int lenData = byteBuf.readableBytes();
         byte[] dataBytes = new byte[lenData];
         byteBuf.readBytes(dataBytes);
         String gateData = DataUtil.encode(dataBytes);
+        logger.info("first receive gateway "+gateData+"channelId "+ctx.channel().id().asShortText());
         //将网关和channel id 存入redis
         if (gateData!=null) {
-            System.out.println("网关");
-            redisUtil.set(gateData, ctx.channel().id().asShortText());
-            //网关存入mysql
-            String[] colums = new String[]{"cf"};
-            hbaseUtil.createTable(gateData,colums);
+            redisUtil.set(ctx.channel().id().asShortText(),gateData);
+            logger.info("网关存入redis");
+
         }else {
-            System.out.println("网关为空");
+            logger.info("网关为空");
         }
 
     }

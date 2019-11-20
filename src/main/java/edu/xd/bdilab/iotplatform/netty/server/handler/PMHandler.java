@@ -7,12 +7,14 @@ import edu.xd.bdilab.iotplatform.netty.decode.DecoderFactory;
 import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class PMHandler extends SimpleChannelInboundHandler<PMPacket> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, PMPacket pmPacket) throws Exception {
         DecoderFactory decoderFactory = new DecoderFactory();
-        System.out.println("PMHandler");
+        logger.info("PMHandler running......");
 
         String data = pmPacket.getData();
 

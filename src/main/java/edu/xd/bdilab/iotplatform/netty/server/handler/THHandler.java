@@ -7,11 +7,14 @@ import edu.xd.bdilab.iotplatform.netty.decode.DecoderFactory;
 import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class THHandler extends SimpleChannelInboundHandler<THPacket> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, THPacket thPacket) throws Exception {
-        System.out.println("THHandler");
+        logger.info("THHandler running......");
+
         DecoderFactory decoderFactory = new DecoderFactory();
 
         String data = thPacket.getData();

@@ -35,5 +35,5 @@ public class DeviceData {
     /**
      * 时间戳
      */
-    private Date timeStamp;
+    private String timeStamp;
 }

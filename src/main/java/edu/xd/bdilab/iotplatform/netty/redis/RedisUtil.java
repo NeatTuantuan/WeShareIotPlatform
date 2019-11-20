@@ -1,10 +1,16 @@
 package edu.xd.bdilab.iotplatform.netty.redis;
 
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+@Slf4j
+@Mapper
+@Component
 public class RedisUtil {
     //服务器IP地址
     private static String ADDR = "47.103.29.15";
@@ -49,7 +55,7 @@ public class RedisUtil {
         try {
             if (jedisPool != null) {
                 Jedis resource = jedisPool.getResource();
-                System.out.println("redis--服务正在运行: " + resource.ping());
+                logger.info("redis--服务正在运行: " + resource.ping());
                 return resource;
             } else {
                 return null;
@@ -75,8 +81,7 @@ public class RedisUtil {
      */
     public String get(String key) {
         Jedis jedis = getJedis();
-        String value = null;
-        value = jedis.get(key);
+        String value  = jedis.get(key);
         return value;
     }
     /**
@@ -91,6 +96,7 @@ public class RedisUtil {
         Jedis jedis = getJedis();
         jedis.select(0);
         jedis.set(key,value);
+
 //        return jedis.set(key, value);
     }
 
