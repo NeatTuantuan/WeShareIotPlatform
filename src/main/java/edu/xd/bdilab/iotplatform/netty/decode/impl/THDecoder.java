@@ -2,23 +2,46 @@ package edu.xd.bdilab.iotplatform.netty.decode.impl;
 
 
 import com.alibaba.fastjson.JSONObject;
+import edu.xd.bdilab.iotplatform.dao.DeviceData;
+import edu.xd.bdilab.iotplatform.mapper.DeviceDataMapper;
 import edu.xd.bdilab.iotplatform.netty.decode.Decoder;
 import edu.xd.bdilab.iotplatform.netty.redis.RedisUtil;
 import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
+import edu.xd.bdilab.iotplatform.netty.util.DateUtil;
+import edu.xd.bdilab.iotplatform.netty.util.StringUtil;
+import edu.xd.bdilab.iotplatform.service.device.DeviceDataService;
+import edu.xd.bdilab.iotplatform.service.device.impl.DeviceDataServiceImpl;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
+import javax.annotation.PostConstruct;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
+@Component
 public class THDecoder implements Decoder {
+    @Autowired
+    private DeviceDataMapper deviceDataMapper;
 
+    public static THDecoder thDecoder;
+
+    @PostConstruct
+    public void init(){
+        thDecoder = this;
+        thDecoder.deviceDataMapper = this.deviceDataMapper;
+    }
 
     @Override
     public void decode(byte[] bytes, String channelId) {
-        RedisUtil redisUtil = new RedisUtil();
+
 
         //二进制->十六进制
         String data = DataUtil.encode(bytes);
@@ -35,8 +58,8 @@ public class THDecoder implements Decoder {
         int humilityInt = Integer.parseInt(humilityStr,16);
         String humility = df.format((float)humilityInt/10);
 
-        System.out.println("温度 "+temperatur);
-        System.out.println("湿度 "+humility);
+        logger.info("温度 "+temperatur);
+        logger.info("湿度 "+humility);
 
 
 
@@ -47,7 +70,30 @@ public class THDecoder implements Decoder {
         String result= json.toString();
 
         //通过id找到对应网关
-        String gateWay = redisUtil.get(channelId);
+        RedisUtil redisUtil = new RedisUtil();
+        String gate = redisUtil.get(channelId);
+        logger.info("redis get gate "+gate);
+        //网关数据转换
+        byte[] gateBytes = DataUtil.deocde(gate);
+        String gateWay = StringUtil.getString(gateBytes);
+        logger.info("转换后的gateway "+gateWay);
+
+        //存入数据库
+        if (gateWay!=null){
+            DeviceData deviceData = new DeviceData();
+            deviceData.setGetwayId(gateWay);
+            deviceData.setMetaData(data);
+            deviceData.setFormatData(result);
+            deviceData.setTimeStamp(DateUtil.getDate());
+            int insertRes = thDecoder.deviceDataMapper.insertSelective(deviceData);
+            if (insertRes>0){
+                logger.info(gateWay+" 存入数据成功");
+            }else {
+                logger.info(gateWay+" 存入数据失败");
+            }
+        }else {
+            logger.info("网关不存在");
+        }
         //通过网关存储到hbase相关表
 //        if (gateWay!= null) {
 //
@@ -61,12 +107,19 @@ public class THDecoder implements Decoder {
 //        }else {
 //            System.out.println("网关不存在");
 //        }
+
+
+
     }
 
-    private static String getDate(){
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        return sdf.format(date);
-    }
 
+    public static void main(String[] args) {
+        String s = "020304010A00CBA95A";
+        byte[] bytes = DataUtil.deocde(s);
+        String channelid = "4f353555";
+        THDecoder thDecoder = new THDecoder();
+        thDecoder.init();
+        thDecoder.decode(bytes,channelid);
+
+    }
 }

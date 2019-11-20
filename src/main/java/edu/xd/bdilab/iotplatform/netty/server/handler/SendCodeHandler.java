@@ -5,11 +5,13 @@ import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@Slf4j
 public class SendCodeHandler extends ChannelInboundHandlerAdapter {
 
     Timer time = new Timer() ;
@@ -57,7 +59,7 @@ public class SendCodeHandler extends ChannelInboundHandlerAdapter {
                 new TimerTask() {
                     @Override
                     public void run() {
-                        System.out.println(new Date()+" 发出数据 "+code);
+                        logger.info(new Date()+" 发出指令 " +code);
                         ByteBuf byteBuf = getByteBuf(ctx,code);
                         ctx.channel().writeAndFlush(byteBuf);
                     }

@@ -10,4 +10,36 @@
          time_stamp as timeStamp
      from device_data WHERE id=#{id}
   </select>
+    
+    <insert id="insertSelective" parameterType="edu.xd.bdilab.iotplatform.dao.DeviceData"  useGeneratedKeys="true" >
+        insert into device_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="getwayId != null">
+                getway_id,
+            </if>
+            <if test="metaData != null">
+                meta_data,
+            </if>
+            <if test="formatData != null">
+                format_data,
+            </if>
+            <if test="timeStamp != null">
+                time_stamp,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="getwayId != null">
+                #{getwayId,jdbcType=VARCHAR},
+            </if>
+            <if test="metaData != null">
+                #{metaData,jdbcType=VARCHAR},
+            </if>
+            <if test="formatData != null">
+                #{formatData,jdbcType=VARCHAR},
+            </if>
+            <if test="timeStamp != null">
+                #{timeStamp,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 </mapper>

@@ -3,19 +3,39 @@ package edu.xd.bdilab.iotplatform.netty.decode.impl;
 
 import com.alibaba.fastjson.JSONObject;
 
+import edu.xd.bdilab.iotplatform.dao.DeviceData;
+import edu.xd.bdilab.iotplatform.mapper.DeviceDataMapper;
 import edu.xd.bdilab.iotplatform.netty.decode.Decoder;
 import edu.xd.bdilab.iotplatform.netty.hbase.HbaseUtil;
 import edu.xd.bdilab.iotplatform.netty.redis.RedisUtil;
 import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
+import edu.xd.bdilab.iotplatform.netty.util.DateUtil;
+import edu.xd.bdilab.iotplatform.netty.util.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
+@Component
 public class PMDecoder implements Decoder {
+    @Autowired
+    DeviceDataMapper deviceDataMapper;
+
+    public static PMDecoder pmDecoder;
+
+    @PostConstruct
+    public void init(){
+        pmDecoder = this;
+        pmDecoder.deviceDataMapper = this.deviceDataMapper;
+    }
 
     public void decode(byte[] bytes,String channelId){
 
@@ -37,7 +57,7 @@ public class PMDecoder implements Decoder {
         int co2_L = Integer.parseInt(c02lStr,16);
         int co2 = co2_H*256 +co2_L;
 
-        System.out.println("co2 "+co2);
+        logger.info("co2 "+co2);
 
         //TVOC[2,3]
         String tvochStr = dataArry[2];
@@ -46,7 +66,7 @@ public class PMDecoder implements Decoder {
         int tvoc_L = Integer.parseInt(tvoclStr,16);
         int TVOC = tvoc_H*256+tvoc_L;
 
-        System.out.println("TVOC "+TVOC );
+        logger.info("TVOC "+TVOC);
 
         //ch2o[4,5]
         String ch2ohStr = dataArry[4];
@@ -55,7 +75,7 @@ public class PMDecoder implements Decoder {
         int ch2o_L = Integer.parseInt(ch2olStr,16);
         int CH2O = ch2o_H*256+ch2o_L;
 
-        System.out.println("CH2O "+CH2O);
+        logger.info("CH2O "+CH2O);
 
         //PM2.5[6,7]
         String pmhStr = dataArry[6];
@@ -64,7 +84,7 @@ public class PMDecoder implements Decoder {
         int pm_L = Integer.parseInt(pmlStr,16);
         int PM = pm_H*256+pm_L;
 
-        System.out.println("PM2.5 "+PM);
+        logger.info("PM2.5 "+PM);
 
         //结果定义为json
         JSONObject json = new JSONObject();
@@ -76,17 +96,33 @@ public class PMDecoder implements Decoder {
 
         //拿到网关
         RedisUtil redisUtil = new RedisUtil();
-        String gateWay = redisUtil.get(channelId);
+        String gate = redisUtil.get(channelId);
+        //将网关转换
+        byte[] gateWayBytes = DataUtil.deocde(gate);
+        String gateWay = StringUtil.getString(gateWayBytes);
 
         if (gateWay!=null) {
-            //通过网关存储到hbase相关表
-            HbaseUtil hbaseUtil = new HbaseUtil();
-            List<Put> putList = new ArrayList<Put>();
-            Put put = new Put(Bytes.toBytes(getDate()));
-            put.addColumn(Bytes.toBytes("cf"), Bytes.toBytes("source data"), Bytes.toBytes(data));
-            put.addColumn(Bytes.toBytes("cf"), Bytes.toBytes("data"), Bytes.toBytes(result));
-            putList.add(put);
-            hbaseUtil.insert(gateWay, putList);
+//            //通过网关存储到hbase相关表
+//            HbaseUtil hbaseUtil = new HbaseUtil();
+//            List<Put> putList = new ArrayList<Put>();
+//            Put put = new Put(Bytes.toBytes(getDate()));
+//            put.addColumn(Bytes.toBytes("cf"), Bytes.toBytes("source data"), Bytes.toBytes(data));
+//            put.addColumn(Bytes.toBytes("cf"), Bytes.toBytes("data"), Bytes.toBytes(result));
+//            putList.add(put);
+//            hbaseUtil.insert(gateWay, putList);
+
+            //存储到mysql
+            DeviceData deviceData = new DeviceData();
+            deviceData.setGetwayId(gateWay);
+            deviceData.setMetaData(data);
+            deviceData.setFormatData(result);
+            deviceData.setTimeStamp(DateUtil.getDate());
+            int insertRes = pmDecoder.deviceDataMapper.insertSelective(deviceData);
+            if (insertRes>0) {
+                logger.info(gateWay + " 存入数据成功");
+            }else {
+                logger.info(gateWay +" 存入数据失败");
+            }
         }else {
             System.out.println("网关不存在");
         }
@@ -94,9 +130,4 @@ public class PMDecoder implements Decoder {
 
     }
 
-    private static String getDate(){
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        return sdf.format(date);
-    }
 }
