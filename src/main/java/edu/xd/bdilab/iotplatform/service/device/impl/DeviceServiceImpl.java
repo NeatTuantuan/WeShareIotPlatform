@@ -4,8 +4,10 @@ import edu.xd.bdilab.iotplatform.dao.DeviceInfo;
 import edu.xd.bdilab.iotplatform.dao.DeviceStateInfo;
 import edu.xd.bdilab.iotplatform.mapper.DeviceInfoMapper;
 import edu.xd.bdilab.iotplatform.mapper.DeviceStateInfoMapper;
+import edu.xd.bdilab.iotplatform.netty.redis.RedisUtil;
 import edu.xd.bdilab.iotplatform.service.device.DeviceService;
 import edu.xd.bdilab.iotplatform.vo.DeviceVO;
+import org.apache.commons.httpclient.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,16 +34,23 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     /**
-     * 添加设备
+     * 添加设备,同时向redis缓存中添加设备id与状态缓存
      * @param deviceInfo
      * @return
      */
     @Override
     public int insertSelective(DeviceInfo deviceInfo) {
         DeviceStateInfo deviceStateInfo = new DeviceStateInfo();
-        deviceStateInfo.setFkDeviceId(deviceInfo.getDeviceId());
+        RedisUtil redisUtil = new RedisUtil();
 
+        deviceStateInfo.setFkDeviceId(deviceInfo.getDeviceId());
         deviceStateInfoMapper.insertDeviceState(deviceStateInfo);
+
+        //选择1号数据库
+        redisUtil.getJedis().select(1);
+        redisUtil.set(deviceInfo.getDeviceId(), );
+
+
         return deviceInfoMapper.insertSelective(deviceInfo);
     }
 

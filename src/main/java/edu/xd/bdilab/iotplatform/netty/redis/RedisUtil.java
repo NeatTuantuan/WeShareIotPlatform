@@ -38,7 +38,6 @@ public class RedisUtil {
             config.setTestOnBorrow(TEST_ON_BORROW);
             jedisPool = new JedisPool(config, ADDR, PORT, TIMEOUT, AUTH, DEFAULT_DATABASE);
         } catch (Exception e) {
-
             e.printStackTrace();
         }
     }
@@ -59,6 +58,8 @@ public class RedisUtil {
             return null;
         }
     }
+
+
     /***
      *
      * 释放资源
