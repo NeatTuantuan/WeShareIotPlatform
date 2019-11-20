@@ -13,5 +13,31 @@ import org.apache.ibatis.annotations.Mapper;
  **/
 @Mapper
 public interface DeviceStateInfoMapper {
+    /**
+     * 根据id查看状态设备
+     * @param id
+     * @return
+     */
     DeviceStateInfo selectById(Integer id);
+
+    /**
+     * 根据设备id查看设备状态
+     * @param fkDeviceId
+     * @return
+     */
+    DeviceStateInfo selectByDeviceId(String fkDeviceId);
+
+    /**
+     * 插入设备状态
+     * @param deviceStateInfo
+     * @return
+     */
+    int insertDeviceState(DeviceStateInfo deviceStateInfo);
+
+    /**
+     * 根据设备id删除设备状态
+     * @param fkDeviceId
+     * @return
+     */
+    int deleteByFkDeviceId(String fkDeviceId);
 }
