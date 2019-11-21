@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.xd.bdilab.iotplatform.mapper.DeviceDataMapper">
+    <select id="selectById" parameterType="Integer" resultType="edu.xd.bdilab.iotplatform.dao.DeviceData">
+        select
+         id as id,
+         getway_id as getwayId,
+         meta_data as metaData,
+         format_data as formatData,
+         time_stamp as timeStamp
+     from device_data WHERE id=#{id}
+  </select>
+    
+    <insert id="insertSelective" parameterType="edu.xd.bdilab.iotplatform.dao.DeviceData"  useGeneratedKeys="true" >
+        insert into device_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="getwayId != null">
+                getway_id,
+            </if>
+            <if test="metaData != null">
+                meta_data,
+            </if>
+            <if test="formatData != null">
+                format_data,
+            </if>
+            <if test="timeStamp != null">
+                time_stamp,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="getwayId != null">
+                #{getwayId,jdbcType=VARCHAR},
+            </if>
+            <if test="metaData != null">
+                #{metaData,jdbcType=VARCHAR},
+            </if>
+            <if test="formatData != null">
+                #{formatData,jdbcType=VARCHAR},
+            </if>
+            <if test="timeStamp != null">
+                #{timeStamp,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>
