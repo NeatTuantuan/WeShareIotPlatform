@@ -23,7 +23,7 @@ public class DeviceData {
     /**
      * 网关id
      */
-    private String getwayId;
+    private String gatewayId;
     /**
      * 元数据
      */

@@ -18,6 +18,10 @@ public enum DeviceCode {
     UPDATE_DEVICE_FAILURE("03007", "更新设备失败"),
     DELETE_DEVICE_SUCCESS("03008", "删除设备成功"),
     DELETE_DEVICE_FAILURE("03009", "删除设备失败"),
+    UPDATE_DEVICE_STATE_SUCCESS("03010","修改设备状态成功"),
+    UPDATE_DEVICE_STATE_FAILURE("03011","修改设备状态失败"),
+    GET_DEVICE_DATA_BY_TIME_SUCCESS("03012","按时间采集数据成功"),
+    GET_DEVICE_DATA_BY_TIME_FAILURE("03013","按实际采集数据失败"),
     ;
 
     private String code;

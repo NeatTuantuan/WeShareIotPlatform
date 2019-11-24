@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.xd.bdilab.iotplatform.mapper.DeviceDataMapper">
+    <resultMap id="BaseResultMap" type="edu.xd.bdilab.iotplatform.dao.DeviceData">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="gateway_id" jdbcType="VARCHAR" property="gatewayId" />
+        <result column="meta_data" jdbcType="VARCHAR" property="metaData" />
+        <result column="format_data" jdbcType="VARCHAR" property="formatData" />
+        <result column="time_stamp" jdbcType="VARCHAR" property="timeStamp"/>
+    </resultMap>
     <select id="selectById" parameterType="Integer" resultType="edu.xd.bdilab.iotplatform.dao.DeviceData">
         select
          id as id,
-         getway_id as getwayId,
+         gateway_id as gatewayId,
          meta_data as metaData,
          format_data as formatData,
          time_stamp as timeStamp
      from device_data WHERE id=#{id}
   </select>
-    
     <insert id="insertSelective" parameterType="edu.xd.bdilab.iotplatform.dao.DeviceData"  useGeneratedKeys="true" >
         insert into device_data
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="getwayId != null">
-                getway_id,
+            <if test="getawayId != null">
+                gateway_id,
             </if>
             <if test="metaData != null">
                 meta_data,
@@ -28,8 +34,8 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="getwayId != null">
-                #{getwayId,jdbcType=VARCHAR},
+            <if test="gatewayId != null">
+                #{gatewayId,jdbcType=VARCHAR},
             </if>
             <if test="metaData != null">
                 #{metaData,jdbcType=VARCHAR},
@@ -42,4 +48,24 @@
             </if>
         </trim>
     </insert>
+    <select id="selectByTime" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select *
+        from device_data
+        <where>
+            <if test="param.gatewayId != null">
+                gateway_id = #{param.gatewayId}
+            </if>
+            <if test="param.beginTime != null and param.beginTime != ''">
+            AND time_stamp <![CDATA[>=]]> #{param.beginTime}
+            </if>
+            <if test="param.endTime != null and param.endTime != ''">
+            AND time_stamp <![CDATA[<=]]>#{param.endTime}
+            </if>
+        </where>
+    </select>
+    <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select *
+        from device_data
+        where gateway_id = #{gatewayId}
+    </select>
 </mapper>

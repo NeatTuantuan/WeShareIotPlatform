@@ -67,7 +67,7 @@ public class THDecoder implements Decoder {
         JSONObject json = new JSONObject();
         json.put("温度",temperatur);
         json.put("湿度",humility);
-        String result= json.toString();
+       String result= json.toString();
 
         //通过id找到对应网关
         RedisUtil redisUtil = new RedisUtil();
@@ -81,7 +81,7 @@ public class THDecoder implements Decoder {
         //存入数据库
         if (gateWay!=null){
             DeviceData deviceData = new DeviceData();
-            deviceData.setGetwayId(gateWay);
+            deviceData.setGatewayId(gateWay);
             deviceData.setMetaData(data);
             deviceData.setFormatData(result);
             deviceData.setTimeStamp(DateUtil.getDate());

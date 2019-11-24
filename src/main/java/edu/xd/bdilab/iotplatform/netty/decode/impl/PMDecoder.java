@@ -113,7 +113,7 @@ public class PMDecoder implements Decoder {
 
             //存储到mysql
             DeviceData deviceData = new DeviceData();
-            deviceData.setGetwayId(gateWay);
+            deviceData.setGatewayId(gateWay);
             deviceData.setMetaData(data);
             deviceData.setFormatData(result);
             deviceData.setTimeStamp(DateUtil.getDate());

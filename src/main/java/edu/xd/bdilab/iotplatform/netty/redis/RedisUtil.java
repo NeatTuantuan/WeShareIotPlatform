@@ -97,7 +97,6 @@ public class RedisUtil {
         jedis.select(0);
         jedis.set(key,value);
 
-//        return jedis.set(key, value);
     }
 
     /**
@@ -118,5 +117,17 @@ public class RedisUtil {
         Jedis jedis = getJedis();
         jedis.select(1);
        return jedis.rpop("testList");
+    }
+
+    public String getTime(String gateWay){
+        Jedis jedis = getJedis();
+        jedis.select(1);
+        return jedis.get(gateWay);
+    }
+
+    public void setTime(String gateWay,String startTime){
+        Jedis jedis = getJedis();
+        jedis.select(1);
+        jedis.set(gateWay,startTime);
     }
 }

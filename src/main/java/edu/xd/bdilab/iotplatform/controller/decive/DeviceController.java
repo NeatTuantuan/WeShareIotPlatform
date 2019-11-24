@@ -3,9 +3,17 @@ package edu.xd.bdilab.iotplatform.controller.decive;
 
 import edu.xd.bdilab.iotplatform.controller.decive.DeviceCode;
 import edu.xd.bdilab.iotplatform.controller.response.ResponseResult;
+import edu.xd.bdilab.iotplatform.dao.DeviceData;
 import edu.xd.bdilab.iotplatform.dao.DeviceInfo;
+import edu.xd.bdilab.iotplatform.dao.DeviceStateInfo;
 import edu.xd.bdilab.iotplatform.dao.ProductInfo;
+import edu.xd.bdilab.iotplatform.netty.redis.RedisUtil;
+import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
+import edu.xd.bdilab.iotplatform.netty.util.DateUtil;
+import edu.xd.bdilab.iotplatform.netty.util.StringUtil;
+import edu.xd.bdilab.iotplatform.service.device.DeviceDataService;
 import edu.xd.bdilab.iotplatform.service.device.DeviceService;
+import edu.xd.bdilab.iotplatform.service.device.DeviceStateInfoService;
 import edu.xd.bdilab.iotplatform.service.product.ProductService;
 import edu.xd.bdilab.iotplatform.vo.DeviceVO;
 import io.swagger.annotations.Api;
@@ -13,6 +21,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +30,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 @RestController
 @Api(tags = {"设备相关功能"})
@@ -32,6 +45,12 @@ public class DeviceController {
     ProductService productService;
     @Autowired
     ResponseResult responseResult;
+    @Autowired
+    DeviceDataService deviceDataService;
+    @Autowired
+    DeviceStateInfoService deviceStateInfoService;
+
+    RedisUtil redisUtil = new RedisUtil();
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -156,6 +175,73 @@ public class DeviceController {
         return responseResult;
     }
 
+    /**
+     * 采集功能，用户按下开始时采集数据
+     * @param gatewayId
+     * @param startTime
+     * @return
+     */
+    @PostMapping(value = "device/startGetData")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "gatewayId",value = "网关id"),
+            @ApiImplicitParam(name = "startTime",value = "开始时间")
+    })
+    @ApiOperation(value = "采集数据")
+    public ResponseResult startGetData(@RequestParam("gatewayId")String gatewayId,
+                                          @RequestParam("startTime")String startTime){
+        //将网关和当前时间存入redis
+        redisUtil.setTime(gatewayId,startTime);
+        //根据网关获取设备状态信息
+        DeviceStateInfo deviceStateInfo = deviceStateInfoService.selectByDeviceId(gatewayId);
+        //修改状态
+        deviceStateInfo.setDeviceState((byte)1);
+        int res = deviceStateInfoService.updateDeviceState(deviceStateInfo);
+        if (res >0){
+            responseResult.setSuccess(true);
+            responseResult.setCode(DeviceCode.UPDATE_DEVICE_STATE_SUCCESS.getCode());
+            responseResult.setMessage(DeviceCode.UPDATE_DEVICE_STATE_SUCCESS.getMessage());
+            return responseResult;
+        }else {
+            responseResult.setSuccess(false);
+            responseResult.setCode(DeviceCode.UPDATE_DEVICE_STATE_FAILURE.getCode());
+            responseResult.setMessage(DeviceCode.UPDATE_DEVICE_STATE_FAILURE.getMessage());
+            return responseResult;
+        }
+
+    }
+
+
+    /**
+     * 根据网关id和时间段查询数据
+     * @param gatewayId
+     * @return
+     */
+    @PostMapping(value = "device/getData")
+    @ApiImplicitParam(name = "gatewayId",value = "网关id")
+    @ApiOperation(value = "获得数据")
+    public ResponseResult getDeviceDataByTime(@RequestParam("gatewayId")String gatewayId){
+
+        Map<String,String> params = new HashMap<>();
+        params.put("gatewayId",gatewayId);
+        //根据网关id获取时间；
+        String startTime = redisUtil.getTime(gatewayId);
+        params.put("startTime",startTime);
+        params.put("endTime", DateUtil.getDate());
+        List<DeviceData> deviceDataList = deviceDataService.selectByTime(params);
+        if (deviceDataList.size()>0){
+            responseResult.setSuccess(true);
+            responseResult.setData(deviceDataList);
+            responseResult.setCode(DeviceCode.GET_DEVICE_DATA_BY_TIME_SUCCESS.getCode());
+            responseResult.setMessage(DeviceCode.GET_DEVICE_DATA_BY_TIME_SUCCESS.getMessage());
+            return responseResult;
+        }else {
+            responseResult.setSuccess(false);
+            responseResult.setCode(DeviceCode.GET_DEVICE_DATA_BY_TIME_FAILURE.getCode());
+            responseResult.setMessage(DeviceCode.GET_DEVICE_DATA_BY_TIME_FAILURE.getMessage());
+            return responseResult;
+        }
+
+    }
 
 
 }

@@ -30,4 +30,14 @@
         delete from device_state_info
         where fk_device_id = #{fkDeviceId,jdbcType=VARCHAR}
     </delete>
+
+    <update id="updateDeviceState" parameterType="edu.xd.bdilab.iotplatform.dao.DeviceInfo">
+        update device_state_info
+        <set>
+            <if test="deviceState != null">
+                device_state = #{deviceState,jdbcType=TINYINT},
+            </if>
+        </set>
+        where fk_device_id = #{fkDeviceId,jdbcType = VARCHAR}
+    </update>
 </mapper>
