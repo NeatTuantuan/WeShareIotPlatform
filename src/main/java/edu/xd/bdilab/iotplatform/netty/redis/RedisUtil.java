@@ -86,7 +86,7 @@ public class RedisUtil {
         return value;
     }
     /**
-     * 设置key的值为value
+     * 设置key的值为value,默认0库
      *
      * @param key
      * @param value
@@ -96,6 +96,22 @@ public class RedisUtil {
 
         Jedis jedis = getJedis();
         jedis.select(0);
+        jedis.set(key,value);
+
+//        return jedis.set(key, value);
+    }
+
+    /**
+     * 设置key的值为value,可选库
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public void set(String key, String value,int index) {
+
+        Jedis jedis = getJedis();
+        jedis.select(index);
         jedis.set(key,value);
 
 //        return jedis.set(key, value);
@@ -119,5 +135,29 @@ public class RedisUtil {
         Jedis jedis = getJedis();
         jedis.select(1);
        return jedis.rpop("testList");
+    }
+
+    /**
+     * 删除key
+     * @param keyName
+     * @return
+     */
+    public boolean deleteKey(String keyName, int index){
+        Jedis jedis = getJedis();
+        jedis.select(1);
+
+
+        if (jedis.exists(keyName)) {
+            if (jedis.del(keyName) == 1) {
+                System.out.println("删除数据成功");
+                return true;
+            } else {
+                System.out.println("删除数据失败");
+                return false;
+            }
+        } else {
+            System.out.println(keyName + "不存在");
+            return false;
+        }
     }
 }

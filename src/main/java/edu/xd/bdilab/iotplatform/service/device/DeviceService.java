@@ -51,4 +51,10 @@ public interface DeviceService {
      */
     List<DeviceVO> getDeviceByName(String name);
 
+    /**
+     * 查询所有设备信息
+     * @return
+     */
+    List<DeviceVO> selectAllDeviceVO();
+
 }

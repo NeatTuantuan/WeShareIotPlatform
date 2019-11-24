@@ -1,4 +1,4 @@
-package edu.xd.bdilab.iotplatform.mapper;
+package edu.xd.bdilab.iotplatform.netty.redis;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,15 +9,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class DeviceInfoMapperTest {
+public class RedisUtilTest {
     @Autowired
-    DeviceInfoMapper deviceInfoMapper;
+    RedisUtil redisUtil;
     @Test
-    public void selectDeviceByName() {
-        System.out.println(deviceInfoMapper.deleteByPrimaryKey("5"));
-    }
-    @Test
-    public void selectAllDevice(){
-        System.out.println(deviceInfoMapper.selectAllDevice());
+    public void deleteKey() {
+        redisUtil.deleteKey("test",1);
     }
 }

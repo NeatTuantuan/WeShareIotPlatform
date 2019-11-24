@@ -52,4 +52,10 @@ public interface DeviceInfoMapper {
      * @return
      */
     List<DeviceInfo> selectDeviceByName(String name);
+
+    /**
+     * 查询所有设备信息
+     * @return
+     */
+    List<DeviceInfo> selectAllDevice();
 }
