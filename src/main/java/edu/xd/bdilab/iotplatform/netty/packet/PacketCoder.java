@@ -1,7 +1,6 @@
-package edu.xd.bdilab.iotplatform.netty.Packet;
+package edu.xd.bdilab.iotplatform.netty.packet;
 
 
-import edu.xd.bdilab.iotplatform.netty.hbase.HbaseUtil;
 import edu.xd.bdilab.iotplatform.netty.redis.RedisUtil;
 import edu.xd.bdilab.iotplatform.netty.responsechain.MainDecoder;
 import edu.xd.bdilab.iotplatform.netty.responsechain.PMDecoder;
@@ -25,6 +24,7 @@ public class PacketCoder {
         //责任链
         MainDecoder thDecoder = new THDecoder();
         MainDecoder pmDecoder = new PMDecoder();
+
 
         thDecoder.setNext(pmDecoder);
 

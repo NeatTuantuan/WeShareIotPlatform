@@ -1,4 +1,4 @@
-package edu.xd.bdilab.iotplatform.netty.Packet;
+package edu.xd.bdilab.iotplatform.netty.packet;
 
 import lombok.Data;
 

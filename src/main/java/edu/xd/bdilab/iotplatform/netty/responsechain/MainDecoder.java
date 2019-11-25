@@ -1,6 +1,6 @@
 package edu.xd.bdilab.iotplatform.netty.responsechain;
 
-import edu.xd.bdilab.iotplatform.netty.Packet.Packet;
+import edu.xd.bdilab.iotplatform.netty.packet.Packet;
 import io.netty.channel.ChannelHandlerContext;
 
 public abstract class MainDecoder {

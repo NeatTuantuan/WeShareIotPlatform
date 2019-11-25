@@ -2,7 +2,7 @@ package edu.xd.bdilab.iotplatform.netty.server.handler;
 
 
 
-import edu.xd.bdilab.iotplatform.netty.Packet.PacketCoder;
+import edu.xd.bdilab.iotplatform.netty.packet.PacketCoder;
 import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

@@ -2,8 +2,8 @@ package edu.xd.bdilab.iotplatform.netty.responsechain;
 
 
 
-import edu.xd.bdilab.iotplatform.netty.Packet.PMPacket;
-import edu.xd.bdilab.iotplatform.netty.Packet.Packet;
+import edu.xd.bdilab.iotplatform.netty.packet.PMPacket;
+import edu.xd.bdilab.iotplatform.netty.packet.Packet;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,6 +18,9 @@ public class PMDecoder extends MainDecoder {
                 pmPacket.setData(data);
                 pmPacket.setChannelId(ctx.channel().id().asShortText());
                 return pmPacket;
+        }else if (getNext() != null) {
+
+            return getNext().decode(data, ctx);
         }else {
                 logger.info("pmpacket为空");
                 return null;

@@ -2,7 +2,7 @@ package edu.xd.bdilab.iotplatform.netty.server.handler;
 
 
 
-import edu.xd.bdilab.iotplatform.netty.Packet.THPacket;
+import edu.xd.bdilab.iotplatform.netty.packet.THPacket;
 import edu.xd.bdilab.iotplatform.netty.decode.DecoderFactory;
 import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
 import io.netty.channel.ChannelHandlerContext;

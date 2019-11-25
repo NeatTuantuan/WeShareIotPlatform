@@ -3,8 +3,8 @@ package edu.xd.bdilab.iotplatform.netty.responsechain;
 
 
 
-import edu.xd.bdilab.iotplatform.netty.Packet.Packet;
-import edu.xd.bdilab.iotplatform.netty.Packet.THPacket;
+import edu.xd.bdilab.iotplatform.netty.packet.Packet;
+import edu.xd.bdilab.iotplatform.netty.packet.THPacket;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
