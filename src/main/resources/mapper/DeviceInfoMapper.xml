@@ -150,6 +150,16 @@
     </where>
   </select>
 
+  <select id="selectAllDevice" resultType="edu.xd.bdilab.iotplatform.dao.DeviceInfo">
+        select
+         device_id as deviceId,
+         fk_product_id as fkProductId,
+         device_name as deviceName,
+         create_time as createTime,
+         getway_id as getwayId
+     from device_info
+  </select>
+
 
 
 </mapper>

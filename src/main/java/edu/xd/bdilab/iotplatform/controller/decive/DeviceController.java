@@ -2,16 +2,20 @@ package edu.xd.bdilab.iotplatform.controller.decive;
 
 
 import edu.xd.bdilab.iotplatform.controller.decive.DeviceCode;
+import edu.xd.bdilab.iotplatform.controller.response.MetaData;
 import edu.xd.bdilab.iotplatform.controller.response.ResponseResult;
 import edu.xd.bdilab.iotplatform.dao.DeviceData;
 import edu.xd.bdilab.iotplatform.dao.DeviceInfo;
 import edu.xd.bdilab.iotplatform.dao.DeviceStateInfo;
 import edu.xd.bdilab.iotplatform.dao.ProductInfo;
+
 import edu.xd.bdilab.iotplatform.netty.redis.RedisUtil;
 import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
 import edu.xd.bdilab.iotplatform.netty.util.DateUtil;
+import edu.xd.bdilab.iotplatform.netty.util.RadomUtil;
 import edu.xd.bdilab.iotplatform.netty.util.StringUtil;
 import edu.xd.bdilab.iotplatform.service.device.DeviceDataService;
+
 import edu.xd.bdilab.iotplatform.service.device.DeviceService;
 import edu.xd.bdilab.iotplatform.service.device.DeviceStateInfoService;
 import edu.xd.bdilab.iotplatform.service.product.ProductService;
@@ -58,13 +62,18 @@ public class DeviceController {
     @ApiImplicitParam(name = "productName", value = "产品名称")
     @ApiOperation(value = "根据产品名称查看设备")
     public ResponseResult getDeviceByProduct(@RequestParam("productName") String productName){
-        List<DeviceVO> deviceVOList = null;
+        List<DeviceVO> deviceVOList = new ArrayList<>();
 
         try{
-            String productId = productService.selectByProductName(productName).getProductId();
-            logger.info("productId : "+productId);
-            deviceVOList = deviceService.getDeviceByProduct(productId);
-            logger.info("deviceVOList : "+deviceVOList);
+
+            if (productName.equals("全部产品")){
+                deviceVOList = deviceService.selectAllDeviceVO();
+            }else {
+                String productId = productService.selectByProductName(productName).getProductId();
+                logger.info("productId : "+productId);
+                deviceVOList = deviceService.getDeviceByProduct(productId);
+                logger.info("deviceVOList : "+deviceVOList);
+            }
         }catch (NullPointerException e){
             responseResult.setData(deviceVOList);
             responseResult.setCode(DeviceCode.GET_DEVICE_FAILURE.getCode());
@@ -72,6 +81,7 @@ public class DeviceController {
             responseResult.setSuccess(true);
         }
 
+        responseResult.setSuccess(true);
         responseResult.setData(deviceVOList);
         responseResult.setCode(DeviceCode.GET_DEVICE_SUCCESS.getCode());
         responseResult.setMessage(DeviceCode.GET_DEVICE_SUCCESS.getMessage());
@@ -82,13 +92,27 @@ public class DeviceController {
 
     @PostMapping(value = "device/addDevice")
     @ApiOperation(value = "添加设备")
-    public ResponseResult addDevice(@RequestBody DeviceInfo deviceInfo){
-        deviceService.insertSelective(deviceInfo);
-        logger.info("deviceInfo : "+deviceInfo.toString());
+    public ResponseResult addDevice(@RequestParam String fkProductId,
+                                    @RequestParam String deviceName,
+                                    @RequestParam String createTime,
+                                    @RequestParam String getwayId){
+        if (!deviceService.getDeviceByName(deviceName).isEmpty()){
+            responseResult = new ResponseResult(null,new MetaData(false,"500","已存在同名设备"));
+        }else {
+            DeviceInfo deviceInfo = new DeviceInfo();
+            deviceInfo.setFkProductId(fkProductId);
+            deviceInfo.setDeviceName(deviceName);
+            deviceInfo.setCreateTime(DateUtil.stringToDate(createTime));
+            deviceInfo.setGetwayId(getwayId);
+            deviceInfo.setDeviceId(new RadomUtil().getRandomString());
+            deviceService.insertSelective(deviceInfo);
+            logger.info("deviceInfo : "+deviceInfo.toString());
 
-        responseResult.setSuccess(true);
-        responseResult.setCode(DeviceCode.ADD_DEVICE_SUCCESS.getCode());
-        responseResult.setMessage(DeviceCode.ADD_DEVICE_SUCCESS.getMessage());
+            responseResult.setSuccess(true);
+            responseResult.setCode(DeviceCode.ADD_DEVICE_SUCCESS.getCode());
+            responseResult.setMessage(DeviceCode.ADD_DEVICE_SUCCESS.getMessage());
+        }
+
 
         return  responseResult;
     }
@@ -111,8 +135,6 @@ public class DeviceController {
             responseResult.setCode(DeviceCode.NO_REQUESTED_DEVICE.getCode());
             responseResult.setMessage(DeviceCode.NO_REQUESTED_DEVICE.getMessage());
         }
-
-
 
         return responseResult;
     }

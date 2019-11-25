@@ -16,4 +16,8 @@ public class DeviceInfoMapperTest {
     public void selectDeviceByName() {
         System.out.println(deviceInfoMapper.deleteByPrimaryKey("5"));
     }
+    @Test
+    public void selectAllDevice(){
+        System.out.println(deviceInfoMapper.selectAllDevice());
+    }
 }
