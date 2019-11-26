@@ -17,10 +17,10 @@ public interface DeviceDataService {
     Map<String,Object> SelectAllDataByDeviceId(String deviceId);
     /**
      * 根据设备id查询最新一条数据
-     * @param gatewayId
+     * @param deviceId
      * @return
      */
-    DeviceData getRecentData(String gatewayId);
+    DeviceData getRecentData(String deviceId);
 
     /**
      * 统计所有数据条数

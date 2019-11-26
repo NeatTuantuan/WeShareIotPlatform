@@ -44,8 +44,8 @@ public class DeviceDataServiceImpl implements DeviceDataService  {
     }
 
     @Override
-    public DeviceData getRecentData(String gatewayId) {
-        return deviceDataMapper.selectRecent(gatewayId);
+    public DeviceData getRecentData(String deviceId) {
+        return deviceDataMapper.selectRecent(deviceInfoMapper.selectByPrimaryKey(deviceId).getGetwayId());
     }
 
     @Override

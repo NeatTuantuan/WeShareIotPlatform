@@ -208,7 +208,7 @@ public class DeviceController {
      */
     @PostMapping(value = "device/startGetData")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "gatewayId",value = "网关id"),
+            @ApiImplicitParam(name = "deviceId",value = "设备id"),
             @ApiImplicitParam(name = "startTime",value = "开始时间")
     })
     @ApiOperation(value = "采集数据")
@@ -238,12 +238,12 @@ public class DeviceController {
 
 
     /**
-     * 根据网关id和时间段查询数据
+     * 根据设备id和时间段查询数据
      * @param deviceId
      * @return
      */
     @PostMapping(value = "device/getData")
-    @ApiImplicitParam(name = "deviceId",value = "网关id")
+    @ApiImplicitParam(name = "deviceId",value = "设备id")
     @ApiOperation(value = "获得一次采集的所有数据")
     public ResponseResult getDeviceDataByTime(@RequestParam("deviceId")String deviceId){
 
@@ -254,11 +254,14 @@ public class DeviceController {
         String startTime = redisUtil.getTime(gatewayId);
         params.put("startTime",startTime);
         params.put("endTime", DateUtil.getDate());
+        Map<String,Object> deviceDataMap = new HashMap<>();
         List<DeviceData> deviceDataList = deviceDataService.selectByTime(params);
 
+        deviceDataMap.put("size",deviceDataList.size());
+        deviceDataMap.put("deviceDataList",deviceDataList);
         if (deviceDataList.size()>0){
             responseResult.setSuccess(true);
-            responseResult.setData(deviceDataList);
+            responseResult.setData(deviceDataMap);
             responseResult.setCode(DeviceCode.GET_DEVICE_DATA_BY_TIME_SUCCESS.getCode());
             responseResult.setMessage(DeviceCode.GET_DEVICE_DATA_BY_TIME_SUCCESS.getMessage());
             return responseResult;
@@ -295,8 +298,7 @@ public class DeviceController {
 
     //查询数据库中所有的数据数量
     @GetMapping(value = "device/selectCount")
-    @ApiImplicitParam(name = "deviceId", value = "设备ID")
-    @ApiOperation(value = "获取所有设备数量")
+    @ApiOperation(value = "获取所有设备数据数量")
     public ResponseResult selectCount(){
         return new ResponseResult(deviceDataService.selectCount(),new MetaData(true,"001","查询成功"));
     }
