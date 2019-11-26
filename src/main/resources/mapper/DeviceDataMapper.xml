@@ -20,7 +20,7 @@
     <insert id="insertSelective" parameterType="edu.xd.bdilab.iotplatform.dao.DeviceData"  useGeneratedKeys="true" >
         insert into device_data
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="getawayId != null">
+            <if test="gatewayId != null">
                 gateway_id,
             </if>
             <if test="metaData != null">
