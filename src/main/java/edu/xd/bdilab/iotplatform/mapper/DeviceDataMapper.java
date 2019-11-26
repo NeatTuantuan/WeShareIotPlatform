@@ -26,4 +26,17 @@ public interface DeviceDataMapper {
     List<DeviceData> selectByTime(@Param("param") Map<String,String> params);
 
     List<DeviceData> selectAll(@Param("gatewayId")String gatewayId);
+
+    /**
+     * 根据设备id查询最新一条数据
+     * @param gatewayId
+     * @return
+     */
+    DeviceData selectRecent(String gatewayId);
+
+    /**
+     * 统计所有数据条数
+     * @return
+     */
+    int selectCount();
 }

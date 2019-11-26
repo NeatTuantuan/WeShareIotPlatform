@@ -1,12 +1,18 @@
 package edu.xd.bdilab.iotplatform.service.device.impl;
 
+import edu.xd.bdilab.iotplatform.dao.DeviceData;
 import edu.xd.bdilab.iotplatform.dao.DeviceInfo;
 import edu.xd.bdilab.iotplatform.dao.DeviceStateInfo;
+import edu.xd.bdilab.iotplatform.dao.ProductInfo;
+import edu.xd.bdilab.iotplatform.mapper.DeviceDataMapper;
 import edu.xd.bdilab.iotplatform.mapper.DeviceInfoMapper;
 import edu.xd.bdilab.iotplatform.mapper.DeviceStateInfoMapper;
+import edu.xd.bdilab.iotplatform.mapper.ProductInfoMapper;
 import edu.xd.bdilab.iotplatform.netty.redis.RedisUtil;
 import edu.xd.bdilab.iotplatform.netty.util.DateUtil;
 import edu.xd.bdilab.iotplatform.service.device.DeviceService;
+import edu.xd.bdilab.iotplatform.vo.DeviceDataVO;
+import edu.xd.bdilab.iotplatform.vo.DeviceReflectionVO;
 import edu.xd.bdilab.iotplatform.vo.DeviceVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +28,11 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private DeviceInfoMapper deviceInfoMapper;
     @Autowired
+    private ProductInfoMapper productInfoMapper;
+    @Autowired
     private DeviceStateInfoMapper deviceStateInfoMapper;
+    @Autowired
+    private DeviceDataMapper deviceDataMapper;
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
@@ -72,7 +82,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     /**
-     * 通过设备id查询某一设备
+     * 通过设备id查询某一设备VO
      * @param deviceId
      * @return
      */
@@ -87,8 +97,10 @@ public class DeviceServiceImpl implements DeviceService {
         deviceVO.setFkProductId(deviceInfo.getFkProductId());
         deviceVO.setGetwayId(deviceInfo.getGetwayId());
         deviceVO.setCreateTime(deviceInfo.getCreateTime());
-        logger.info(deviceInfo.getDeviceId());
+        logger.info("------DeviceId:"+deviceInfo.getDeviceId()+"------");
         deviceVO.setDeviceState(deviceStateInfoMapper.selectByDeviceId(deviceInfo.getDeviceId()).getDeviceState());
+        logger.info("------FkProductId:"+deviceInfo.getFkProductId()+"------");
+        deviceVO.setProductInfo(productInfoMapper.selectByPrimaryKey(deviceInfo.getFkProductId()));
         return deviceVO;
     }
 
@@ -131,6 +143,26 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     /**
+     * 设备影子
+     * @param deviceId
+     * @return
+     */
+    @Override
+    public DeviceReflectionVO deviceReflection(String deviceId) {
+        DeviceReflectionVO deviceReflectionVO = new DeviceReflectionVO();
+        DeviceInfo deviceInfo = deviceInfoMapper.selectByPrimaryKey(deviceId);
+
+        deviceReflectionVO.setDeviceInfo(deviceInfo);
+        deviceReflectionVO.setProductInfo(productInfoMapper.selectByPrimaryKey(deviceInfo.getFkProductId()));
+        deviceReflectionVO.setDeviceSate(deviceStateInfoMapper.selectByDeviceId(deviceId).getDeviceState());
+//        logger.info("DeviceDataVO:" + deviceDataMapper.selectRecent(deviceInfo.getGetwayId()));
+        deviceReflectionVO.setDeviceDataVO(
+                deviceDataToDeviceDataVO(deviceDataMapper.selectRecent(deviceInfo.getGetwayId()))
+        );
+        return deviceReflectionVO;
+    }
+
+    /**
      * deviceInfo实体类转deviceVO
      * @param deviceInfoList
      * @return
@@ -146,7 +178,7 @@ public class DeviceServiceImpl implements DeviceService {
             deviceVO.setDeviceName(deviceInfo.getDeviceName());
             deviceVO.setCreateTime(deviceInfo.getCreateTime());
             deviceVO.setGetwayId(deviceInfo.getGetwayId());
-            logger.info(deviceInfo.getDeviceId());
+            logger.info("------DeviceId:"+deviceInfo.getDeviceId()+"------");
 //            logger.info(deviceStateInfoMapper.selectByDeviceId(deviceInfo.getDeviceId()).toString());
             deviceVO.setDeviceState(deviceStateInfoMapper.selectByDeviceId(deviceInfo.getDeviceId()).getDeviceState());
 
@@ -155,6 +187,23 @@ public class DeviceServiceImpl implements DeviceService {
 
         return deviceVOList;
 
+    }
+
+    /**
+     * deviceData类型转DeviceDataVO
+     * @param deviceData
+     * @return
+     */
+    public DeviceDataVO deviceDataToDeviceDataVO(DeviceData deviceData){
+        DeviceDataVO deviceDataVO = new DeviceDataVO();
+        if (deviceData!=null){
+            deviceDataVO.setGatewayId(deviceData.getGatewayId());
+            deviceDataVO.setMetaData(deviceData.getMetaData());
+            deviceDataVO.setFormatData(deviceData.getFormatData());
+            deviceDataVO.setTimeStamp(deviceData.getTimeStamp());
+        }
+
+        return deviceDataVO;
     }
 
 

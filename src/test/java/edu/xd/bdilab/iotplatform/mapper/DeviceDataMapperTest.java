@@ -70,4 +70,17 @@ public class DeviceDataMapperTest {
         List<DeviceData> list = deviceDataMapper.selectAll("@@@864376049834723");
         System.out.println(list.size());
     }
+
+    @Test
+    public void selectRecent(){
+        System.out.println(deviceDataMapper.selectRecent("@@@864376049834723"));
+    }
+
+    @Test
+    public void selectCount(){
+        System.out.println(deviceDataMapper.selectCount());
+    }
+
+
+
 }

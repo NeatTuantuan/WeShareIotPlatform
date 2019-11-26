@@ -38,4 +38,8 @@ public class DeviceStateInfoMapperTest {
         deviceStateInfo.setDeviceState((byte) 1);
         deviceStateInfoMapper.updateDeviceState(deviceStateInfo);
     }
+    @Test
+    public void selectDeviceStateInfoByState(){
+        System.out.println(deviceStateInfoMapper.selectDeviceStateInfoByState(1));
+    }
 }

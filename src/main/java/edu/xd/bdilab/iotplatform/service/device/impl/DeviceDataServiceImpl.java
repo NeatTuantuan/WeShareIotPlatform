@@ -2,11 +2,13 @@ package edu.xd.bdilab.iotplatform.service.device.impl;
 
 import edu.xd.bdilab.iotplatform.dao.DeviceData;
 import edu.xd.bdilab.iotplatform.mapper.DeviceDataMapper;
+import edu.xd.bdilab.iotplatform.mapper.DeviceInfoMapper;
 import edu.xd.bdilab.iotplatform.service.device.DeviceDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +16,8 @@ import java.util.Map;
 public class DeviceDataServiceImpl implements DeviceDataService  {
     @Autowired
     DeviceDataMapper deviceDataMapper;
+    @Autowired
+    DeviceInfoMapper deviceInfoMapper;
     @Override
     public int insertSelective(DeviceData deviceData) {
         return deviceDataMapper.insertSelective(deviceData);
@@ -27,6 +31,26 @@ public class DeviceDataServiceImpl implements DeviceDataService  {
     @Override
     public List<DeviceData> selectAll(String gatewayId) {
         return selectAll(gatewayId);
+    }
+
+    @Override
+    public Map<String, Object> SelectAllDataByDeviceId(String deviceId) {
+        String gatewayId = deviceInfoMapper.selectByPrimaryKey(deviceId).getGetwayId();
+        List<DeviceData> deviceDataList = deviceDataMapper.selectAll(gatewayId);
+        Map<String, Object> deviceDataMap = new HashMap<>();
+        deviceDataMap.put("deviceDataList",deviceDataList);
+        deviceDataMap.put("count",deviceDataList.size());
+        return deviceDataMap;
+    }
+
+    @Override
+    public DeviceData getRecentData(String gatewayId) {
+        return deviceDataMapper.selectRecent(gatewayId);
+    }
+
+    @Override
+    public int selectCount() {
+        return deviceDataMapper.selectCount();
     }
 
 }

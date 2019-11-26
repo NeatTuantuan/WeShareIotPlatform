@@ -58,8 +58,8 @@ public class DeviceServiceImplTest {
 
     @Test
     public void selectById() {
-//        DeviceInfo deviceInfo = deviceService.selectById("2");
-//        System.out.println(deviceInfo.getDeviceName());
+        DeviceVO deviceVO = deviceService.selectById("3");
+        System.out.println(deviceVO);
     }
 
     @Test

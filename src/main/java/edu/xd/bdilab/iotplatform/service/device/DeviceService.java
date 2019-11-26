@@ -1,6 +1,8 @@
 package edu.xd.bdilab.iotplatform.service.device;
 
+import edu.xd.bdilab.iotplatform.dao.DeviceData;
 import edu.xd.bdilab.iotplatform.dao.DeviceInfo;
+import edu.xd.bdilab.iotplatform.vo.DeviceReflectionVO;
 import edu.xd.bdilab.iotplatform.vo.DeviceVO;
 
 import java.util.List;
@@ -56,5 +58,11 @@ public interface DeviceService {
      * @return
      */
     List<DeviceVO> selectAllDeviceVO();
+
+    DeviceReflectionVO deviceReflection(String deviceId);
+
+
+
+
 
 }

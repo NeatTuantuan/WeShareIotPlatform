@@ -13,4 +13,18 @@ public interface DeviceDataService {
     List<DeviceData> selectByTime(Map<String,String> params);
 
     List<DeviceData> selectAll(String gatewayId);
+
+    Map<String,Object> SelectAllDataByDeviceId(String deviceId);
+    /**
+     * 根据设备id查询最新一条数据
+     * @param gatewayId
+     * @return
+     */
+    DeviceData getRecentData(String gatewayId);
+
+    /**
+     * 统计所有数据条数
+     * @return
+     */
+    int selectCount();
 }

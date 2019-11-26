@@ -19,20 +19,17 @@ import edu.xd.bdilab.iotplatform.service.device.DeviceDataService;
 import edu.xd.bdilab.iotplatform.service.device.DeviceService;
 import edu.xd.bdilab.iotplatform.service.device.DeviceStateInfoService;
 import edu.xd.bdilab.iotplatform.service.product.ProductService;
+import edu.xd.bdilab.iotplatform.vo.DeviceReflectionVO;
 import edu.xd.bdilab.iotplatform.vo.DeviceVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
-import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,6 +88,12 @@ public class DeviceController {
 
 
     @PostMapping(value = "device/addDevice")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "fkProductId", value = "产品ID"),
+            @ApiImplicitParam(name = "deviceName", value = "设备名称"),
+            @ApiImplicitParam(name = "createTime", value = "创建时间"),
+            @ApiImplicitParam(name = "getwayId", value = "网关id"),
+    })
     @ApiOperation(value = "添加设备")
     public ResponseResult addDevice(@RequestParam String fkProductId,
                                     @RequestParam String deviceName,
@@ -199,7 +202,7 @@ public class DeviceController {
 
     /**
      * 采集功能，用户按下开始时采集数据
-     * @param gatewayId
+     * @param deviceId
      * @param startTime
      * @return
      */
@@ -209,8 +212,9 @@ public class DeviceController {
             @ApiImplicitParam(name = "startTime",value = "开始时间")
     })
     @ApiOperation(value = "采集数据")
-    public ResponseResult startGetData(@RequestParam("gatewayId")String gatewayId,
+    public ResponseResult startGetData(@RequestParam("deviceId")String deviceId,
                                           @RequestParam("startTime")String startTime){
+        String gatewayId = deviceService.selectById(deviceId).getGetwayId();
         //将网关和当前时间存入redis
         redisUtil.setTime(gatewayId,startTime);
         //根据网关获取设备状态信息
@@ -235,21 +239,23 @@ public class DeviceController {
 
     /**
      * 根据网关id和时间段查询数据
-     * @param gatewayId
+     * @param deviceId
      * @return
      */
     @PostMapping(value = "device/getData")
-    @ApiImplicitParam(name = "gatewayId",value = "网关id")
-    @ApiOperation(value = "获得数据")
-    public ResponseResult getDeviceDataByTime(@RequestParam("gatewayId")String gatewayId){
+    @ApiImplicitParam(name = "deviceId",value = "网关id")
+    @ApiOperation(value = "获得一次采集的所有数据")
+    public ResponseResult getDeviceDataByTime(@RequestParam("deviceId")String deviceId){
 
+        String gatewayId = deviceService.selectById(deviceId).getGetwayId();
         Map<String,String> params = new HashMap<>();
         params.put("gatewayId",gatewayId);
-        //根据网关id获取时间；
+        //根据网关id获取开始时间；
         String startTime = redisUtil.getTime(gatewayId);
         params.put("startTime",startTime);
         params.put("endTime", DateUtil.getDate());
         List<DeviceData> deviceDataList = deviceDataService.selectByTime(params);
+
         if (deviceDataList.size()>0){
             responseResult.setSuccess(true);
             responseResult.setData(deviceDataList);
@@ -264,6 +270,62 @@ public class DeviceController {
         }
 
     }
+
+    @GetMapping(value = "device/getOnlineDeviceCount")
+    @ApiOperation(value = "获得所有在线设备信息及数量")
+    public ResponseResult getOnlineDeviceCount(){
+        responseResult.setData(deviceStateInfoService.selectDeviceStateInfoByState(1));
+        responseResult.setSuccess(true);
+        responseResult.setCode("001");
+        responseResult.setMessage("成功获得所有在线设备信息");
+        return responseResult;
+    }
+
+    //根据设备id获取该设备所有的数据以及数量
+    @PostMapping(value = "device/getOneDeviceAllData")
+    @ApiImplicitParam(name = "deviceId", value = "设备ID")
+    @ApiOperation(value = "获得一个设备的所有数据信息")
+    public ResponseResult getOneDeviceAllData(@RequestParam String deviceId){
+        responseResult.setData(deviceDataService.SelectAllDataByDeviceId(deviceId));
+        responseResult.setSuccess(true);
+        responseResult.setCode("001");
+        responseResult.setMessage("获取设备数据信息成功");
+        return  responseResult;
+    }
+
+    //查询数据库中所有的数据数量
+    @GetMapping(value = "device/selectCount")
+    @ApiImplicitParam(name = "deviceId", value = "设备ID")
+    @ApiOperation(value = "获取所有设备数量")
+    public ResponseResult selectCount(){
+        return new ResponseResult(deviceDataService.selectCount(),new MetaData(true,"001","查询成功"));
+    }
+
+
+    @PostMapping(value = "device/deviceReflection")
+    @ApiImplicitParam(name = "deviceId", value = "设备ID")
+    @ApiOperation(value = "获取设备影子")
+    public ResponseResult deviceReflection(@RequestParam String deviceId){
+        DeviceReflectionVO deviceReflectionVO = deviceService.deviceReflection(deviceId);
+        responseResult.setData(deviceReflectionVO);
+        responseResult.setSuccess(true);
+        responseResult.setCode("001");
+        responseResult.setMessage("查询设备影子成功");
+        return responseResult;
+    }
+
+    @PostMapping(value = "device/getRecentData")
+    @ApiImplicitParam(name = "deviceId", value = "设备ID")
+    @ApiOperation(value = "获取设备最新一条数据")
+    public ResponseResult getRecentData(@RequestParam String deviceId){
+        responseResult.setData(deviceDataService.getRecentData(deviceId));
+        responseResult.setSuccess(true);
+        responseResult.setCode("001");
+        responseResult.setMessage("获取设备最新一条数据");
+        return responseResult;
+    }
+
+
 
 
 }
