@@ -8,9 +8,9 @@ import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class PMDecoder extends MainDecoder {
+public class PMEncoder extends MainEncoder {
     @Override
-    public Packet decode(String data, ChannelHandlerContext ctx) {
+    public Packet encode(String data, ChannelHandlerContext ctx) {
 
         if (data.length()==38){
             PMPacket pmPacket = new PMPacket();
@@ -19,7 +19,7 @@ public class PMDecoder extends MainDecoder {
                 return pmPacket;
         }else if (getNext() != null) {
 
-            return getNext().decode(data, ctx);
+            return getNext().encode(data, ctx);
         }else {
                 logger.info("PMSensor数据错误");
                 return null;

@@ -9,10 +9,10 @@ import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class THDecoder extends MainDecoder {
+public class THEncoder extends MainEncoder {
 
     @Override
-    public Packet decode(String data, ChannelHandlerContext ctx) {
+    public Packet encode(String data, ChannelHandlerContext ctx) {
 
         if (data.length() == 18) {
             THPacket thPacket = new THPacket();
@@ -21,7 +21,7 @@ public class THDecoder extends MainDecoder {
             return thPacket;
         } else if (getNext() != null) {
 
-           return getNext().decode(data, ctx);
+           return getNext().encode(data, ctx);
         } else {
             logger.info("THSensor数据错误");
             return null;

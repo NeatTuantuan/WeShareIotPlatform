@@ -30,7 +30,7 @@ public class THHandler extends SimpleChannelInboundHandler<THPacket> {
 
 
         decoderFactory.getDecoder("THHandler").decode(thByteByte,channelId);
-//        THDecoder.decode(thByteByte,channelId);
+
 
     }
 }

@@ -2,9 +2,9 @@ package edu.xd.bdilab.iotplatform.netty.packet;
 
 
 import edu.xd.bdilab.iotplatform.netty.redis.RedisUtil;
-import edu.xd.bdilab.iotplatform.netty.responsechain.MainDecoder;
-import edu.xd.bdilab.iotplatform.netty.responsechain.PMDecoder;
-import edu.xd.bdilab.iotplatform.netty.responsechain.THDecoder;
+import edu.xd.bdilab.iotplatform.netty.responsechain.MainEncoder;
+import edu.xd.bdilab.iotplatform.netty.responsechain.PMEncoder;
+import edu.xd.bdilab.iotplatform.netty.responsechain.THEncoder;
 import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,13 +22,13 @@ public class PacketCoder {
         String rawData = DataUtil.encode(dataBytes);
 
         //责任链
-        MainDecoder thDecoder = new THDecoder();
-        MainDecoder pmDecoder = new PMDecoder();
+        MainEncoder thEncoder = new THEncoder();
+        MainEncoder pmEncoder = new PMEncoder();
 
 
-        thDecoder.setNext(pmDecoder);
+        thEncoder.setNext(pmEncoder);
 
-        return  thDecoder.decode(rawData,ctx);
+        return  thEncoder.encode(rawData,ctx);
 
 //        byteBuf.markReaderIndex();
 //        int lenData = byteBuf.readableBytes();

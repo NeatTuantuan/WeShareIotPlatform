@@ -2,6 +2,7 @@ package edu.xd.bdilab.iotplatform.netty.server.handler;
 
 
 
+import edu.xd.bdilab.iotplatform.netty.decode.impl.PMDecoder;
 import edu.xd.bdilab.iotplatform.netty.packet.PMPacket;
 import edu.xd.bdilab.iotplatform.netty.decode.DecoderFactory;
 import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
@@ -29,6 +30,5 @@ public class PMHandler extends SimpleChannelInboundHandler<PMPacket> {
 
         decoderFactory.getDecoder("PMHandler").decode(bytes,channelId);
 
-//        PMDecoder.decode(bytes,channelId);
     }
 }

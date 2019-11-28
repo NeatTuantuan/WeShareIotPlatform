@@ -3,15 +3,15 @@ package edu.xd.bdilab.iotplatform.netty.responsechain;
 import edu.xd.bdilab.iotplatform.netty.packet.Packet;
 import io.netty.channel.ChannelHandlerContext;
 
-public abstract class MainDecoder {
+public abstract class MainEncoder {
 
-    private MainDecoder next;
-    public void setNext(MainDecoder next){
+    private MainEncoder next;
+    public void setNext(MainEncoder next){
         this.next = next;
     }
-    public MainDecoder getNext(){
+    public MainEncoder getNext(){
         return next;
     }
 
-    public abstract Packet decode(String data, ChannelHandlerContext ctx);
+    public abstract Packet encode(String data, ChannelHandlerContext ctx);
 }
