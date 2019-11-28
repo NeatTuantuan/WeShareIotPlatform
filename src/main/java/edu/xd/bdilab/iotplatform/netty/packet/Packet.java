@@ -12,5 +12,6 @@ public abstract class Packet {
 
     private String channelId;
 
+    public abstract String getFlag();
 
 }

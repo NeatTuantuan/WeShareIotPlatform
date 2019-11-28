@@ -16,7 +16,6 @@ public class THDecoder extends MainDecoder {
 
         if (data.length() == 18) {
             THPacket thPacket = new THPacket();
-            thPacket.setFlag("A");
             thPacket.setData(data);
             thPacket.setChannelId(ctx.channel().id().asShortText());
             return thPacket;
@@ -24,9 +23,11 @@ public class THDecoder extends MainDecoder {
 
            return getNext().decode(data, ctx);
         } else {
-            logger.info("thPacket为空");
+            logger.info("THSensor数据错误");
             return null;
         }
     }
+
+
 
 }

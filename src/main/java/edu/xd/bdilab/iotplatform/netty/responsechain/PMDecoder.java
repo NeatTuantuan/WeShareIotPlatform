@@ -14,7 +14,6 @@ public class PMDecoder extends MainDecoder {
 
         if (data.length()==38){
             PMPacket pmPacket = new PMPacket();
-                pmPacket.setFlag("B");
                 pmPacket.setData(data);
                 pmPacket.setChannelId(ctx.channel().id().asShortText());
                 return pmPacket;
@@ -22,7 +21,7 @@ public class PMDecoder extends MainDecoder {
 
             return getNext().decode(data, ctx);
         }else {
-                logger.info("pmpacket为空");
+                logger.info("PMSensor数据错误");
                 return null;
             }
     }
