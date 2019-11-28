@@ -33,7 +33,7 @@ public class DataDecoder extends ByteToMessageDecoder {
             if (!rawData.startsWith("40")){
                 byte[] bytes = DataUtil.deocde(rawData);
                 byteBuf.writeBytes(bytes);
-                out.add(packetCoder.decode(byteBuf,ctx));
+                out.add(packetCoder.encode(byteBuf,ctx));
             }else {
                 byte[] bytes = DataUtil.deocde(rawData);
                 byteBuf.writeBytes(bytes);

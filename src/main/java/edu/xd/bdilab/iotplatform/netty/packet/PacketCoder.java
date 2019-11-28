@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PacketCoder {
 
-    public Packet decode (ByteBuf byteBuf, ChannelHandlerContext ctx){
+    public Packet encode(ByteBuf byteBuf, ChannelHandlerContext ctx){
 
         //解析源数据
         int lenData = byteBuf.readableBytes();
