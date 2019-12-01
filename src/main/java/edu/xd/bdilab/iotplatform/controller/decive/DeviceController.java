@@ -333,9 +333,11 @@ public class DeviceController {
         List<DeviceProductInfo> deviceProductInfoList = new ArrayList<>();
         for (DeviceInfo deviceInfo:deviceInfoList){
             ProductInfo productInfo = productService.selectByPrimaryKey(deviceInfo.getFkProductId());
+            DeviceStateInfo deviceStateInfo = deviceStateInfoService.selectByDeviceId(deviceInfo.getDeviceId());
             DeviceProductInfo deviceProductInfo = new DeviceProductInfo();
             BeanUtils.copyProperties(deviceInfo,deviceProductInfo);
             deviceProductInfo.setProductName(productInfo.getProductName());
+            deviceProductInfo.setDeviceState(deviceStateInfo.getDeviceState());
             deviceProductInfoList.add(deviceProductInfo);
         }
 
