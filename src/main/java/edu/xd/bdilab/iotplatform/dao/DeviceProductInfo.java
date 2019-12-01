@@ -38,4 +38,10 @@ public class DeviceProductInfo {
      * 产品名称
      */
     private String productName;
+    /**
+     * 设备状态（默认关闭）：
+     * 1.开启
+     * 0.关闭
+     */
+    private Byte deviceState;
 }
