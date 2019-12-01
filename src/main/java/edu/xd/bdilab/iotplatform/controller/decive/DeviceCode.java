@@ -23,6 +23,9 @@ public enum DeviceCode {
     GET_DEVICE_DATA_BY_TIME_SUCCESS("03012","按时间采集数据成功"),
     GET_DEVICE_DATA_BY_TIME_FAILURE("03013","按实际采集数据失败"),
     GET_DEVICE_PRODUCT_DATA_SUCCESS("03014","查询所有设备和产品数据成功"),
+    GET_DEVICE_PRODUCT_DATA_FAILURE("03015","查询所有设备和产品数据失败"),
+    GET_RECENT_DATA_SUCCESS("03016","查询最新一条数据成功"),
+    GET_RECENT_DATA_FAILURE("03017","查询最新一条数据失败"),
     ;
 
     private String code;
