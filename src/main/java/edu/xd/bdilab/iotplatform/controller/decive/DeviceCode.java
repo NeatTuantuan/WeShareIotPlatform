@@ -22,6 +22,7 @@ public enum DeviceCode {
     UPDATE_DEVICE_STATE_FAILURE("03011","修改设备状态失败"),
     GET_DEVICE_DATA_BY_TIME_SUCCESS("03012","按时间采集数据成功"),
     GET_DEVICE_DATA_BY_TIME_FAILURE("03013","按实际采集数据失败"),
+    GET_DEVICE_PRODUCT_DATA_SUCCESS("03014","查询所有设备和产品数据成功"),
     ;
 
     private String code;

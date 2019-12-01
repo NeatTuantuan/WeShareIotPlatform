@@ -1,21 +1,16 @@
 package edu.xd.bdilab.iotplatform.controller.decive;
 
 
-import edu.xd.bdilab.iotplatform.controller.decive.DeviceCode;
 import edu.xd.bdilab.iotplatform.controller.response.MetaData;
 import edu.xd.bdilab.iotplatform.controller.response.ResponseResult;
-import edu.xd.bdilab.iotplatform.dao.DeviceData;
-import edu.xd.bdilab.iotplatform.dao.DeviceInfo;
-import edu.xd.bdilab.iotplatform.dao.DeviceStateInfo;
-import edu.xd.bdilab.iotplatform.dao.ProductInfo;
+import edu.xd.bdilab.iotplatform.dao.*;
 
 import edu.xd.bdilab.iotplatform.netty.redis.RedisUtil;
-import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
 import edu.xd.bdilab.iotplatform.netty.util.DateUtil;
 import edu.xd.bdilab.iotplatform.netty.util.RadomUtil;
-import edu.xd.bdilab.iotplatform.netty.util.StringUtil;
 import edu.xd.bdilab.iotplatform.service.device.DeviceDataService;
 
+import edu.xd.bdilab.iotplatform.service.device.DeviceInfoService;
 import edu.xd.bdilab.iotplatform.service.device.DeviceService;
 import edu.xd.bdilab.iotplatform.service.device.DeviceStateInfoService;
 import edu.xd.bdilab.iotplatform.service.product.ProductService;
@@ -25,9 +20,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +45,9 @@ public class DeviceController {
     DeviceDataService deviceDataService;
     @Autowired
     DeviceStateInfoService deviceStateInfoService;
+    @Autowired
+    DeviceInfoService deviceInfoService;
+
 
     RedisUtil redisUtil = new RedisUtil();
 
@@ -328,6 +326,24 @@ public class DeviceController {
     }
 
 
+    @PostMapping(value = "device/getAllDeviceAndProductInfo")
+    @ApiOperation(value = "获取所有设备和对应产品信息")
+    public ResponseResult getAllDeviceInfo(){
+        List<DeviceInfo> deviceInfoList = deviceInfoService.selectAllDeviceInfo();
+        List<DeviceProductInfo> deviceProductInfoList = new ArrayList<>();
+        for (DeviceInfo deviceInfo:deviceInfoList){
+            ProductInfo productInfo = productService.selectByPrimaryKey(deviceInfo.getFkProductId());
+            DeviceProductInfo deviceProductInfo = new DeviceProductInfo();
+            BeanUtils.copyProperties(deviceInfo,deviceProductInfo);
+            deviceProductInfo.setProductName(productInfo.getProductName());
+            deviceProductInfoList.add(deviceProductInfo);
+        }
+        responseResult.setData(deviceProductInfoList);
+        responseResult.setSuccess(true);
+        responseResult.setCode(DeviceCode.GET_DEVICE_PRODUCT_DATA_SUCCESS.getCode());
+        responseResult.setMessage(DeviceCode.GET_DEVICE_PRODUCT_DATA_SUCCESS.getMessage());
+        return responseResult;
+    }
 
 
 }
