@@ -217,8 +217,8 @@ public class DeviceController {
         String gatewayId = deviceService.selectById(deviceId).getGetwayId();
         //将网关和当前时间存入redis
         redisUtil.setTime(gatewayId,startTime);
-        //根据网关获取设备状态信息
-        DeviceStateInfo deviceStateInfo = deviceStateInfoService.selectByDeviceId(gatewayId);
+        //根据设备id获取设备状态信息
+        DeviceStateInfo deviceStateInfo = deviceStateInfoService.selectByDeviceId(deviceId);
         //修改状态
         deviceStateInfo.setDeviceState((byte)1);
         int res = deviceStateInfoService.updateDeviceState(deviceStateInfo);
