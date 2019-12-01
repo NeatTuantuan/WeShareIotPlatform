@@ -73,13 +73,14 @@
 
     <select id="selectRecent" parameterType="java.lang.String" resultType="edu.xd.bdilab.iotplatform.dao.DeviceData">
         select
-            id as id,
+             id as id,
             gateway_id as gatewayId,
             meta_data as metaData,
             format_data as formatData,
             time_stamp as timeStamp
         from device_data
-        where time_stamp = (select max(time_stamp) from device_data where gateway_id = #{gatewayId})
+        where gateway_id = #{gatewayId}
+        order by id desc limit 1
     </select>
 
     <select id="selectCount" resultType="Integer">
