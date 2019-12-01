@@ -320,8 +320,8 @@ public class DeviceController {
     public ResponseResult getRecentData(@RequestParam String deviceId){
         responseResult.setData(deviceDataService.getRecentData(deviceId));
         responseResult.setSuccess(true);
-        responseResult.setCode("001");
-        responseResult.setMessage("获取设备最新一条数据");
+        responseResult.setCode(DeviceCode.GET_RECENT_DATA_SUCCESS.getCode());
+        responseResult.setMessage(DeviceCode.GET_RECENT_DATA_SUCCESS.getMessage());
         return responseResult;
     }
 
@@ -338,12 +338,18 @@ public class DeviceController {
             deviceProductInfo.setProductName(productInfo.getProductName());
             deviceProductInfoList.add(deviceProductInfo);
         }
-        responseResult.setData(deviceProductInfoList);
-        responseResult.setSuccess(true);
-        responseResult.setCode(DeviceCode.GET_DEVICE_PRODUCT_DATA_SUCCESS.getCode());
-        responseResult.setMessage(DeviceCode.GET_DEVICE_PRODUCT_DATA_SUCCESS.getMessage());
-        return responseResult;
+
+        if(deviceProductInfoList.size()>0) {
+            responseResult.setData(deviceProductInfoList);
+            responseResult.setSuccess(true);
+            responseResult.setCode(DeviceCode.GET_DEVICE_PRODUCT_DATA_SUCCESS.getCode());
+            responseResult.setMessage(DeviceCode.GET_DEVICE_PRODUCT_DATA_SUCCESS.getMessage());
+            return responseResult;
+        }else {
+            responseResult.setSuccess(false);
+            responseResult.setCode(DeviceCode.GET_DEVICE_PRODUCT_DATA_FAILURE.getCode());
+            responseResult.setMessage(DeviceCode.GET_DEVICE_PRODUCT_DATA_FAILURE.getMessage());
+            return responseResult;
+        }
     }
-
-
 }
