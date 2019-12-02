@@ -1,4 +1,4 @@
-package edu.xd.bdilab.iotplatform.service;
+package edu.xd.bdilab.iotplatform.service.user;
 
 import edu.xd.bdilab.iotplatform.dao.Role;
 

@@ -17,6 +17,7 @@ public class DeviceStateInfoServiceImplTest {
 
     @Test
     public void selectByDeviceId() {
+        System.out.println(deviceStateInfoService.selectByDeviceId("4"));
     }
 
     @Test
