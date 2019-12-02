@@ -326,7 +326,7 @@ public class DeviceController {
     }
 
 
-    @PostMapping(value = "device/getAllDeviceAndProductInfo")
+    @GetMapping(value = "device/getAllDeviceAndProductInfo")
     @ApiOperation(value = "获取所有设备和对应产品信息")
     public ResponseResult getAllDeviceInfo(){
         List<DeviceInfo> deviceInfoList = deviceInfoService.selectAllDeviceInfo();
