@@ -8,4 +8,10 @@
          password as password
      from user WHERE user_name=#{user_name}
   </select>
+
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="userId" parameterType="edu.xd.bdilab.iotplatform.dao.User">
+        insert into user (user_name, password)
+        values (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
+    </insert>
 </mapper>

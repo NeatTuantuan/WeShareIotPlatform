@@ -32,4 +32,5 @@ public class DeviceInfo {
      */
     private String getwayId;
 
+
 }

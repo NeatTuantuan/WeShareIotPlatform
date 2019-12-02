@@ -1,6 +1,9 @@
 package edu.xd.bdilab.iotplatform.service.device;
 
+import edu.xd.bdilab.iotplatform.dao.DeviceData;
 import edu.xd.bdilab.iotplatform.dao.DeviceInfo;
+import edu.xd.bdilab.iotplatform.vo.DeviceReflectionVO;
+import edu.xd.bdilab.iotplatform.vo.DeviceVO;
 
 import java.util.List;
 
@@ -10,7 +13,7 @@ public interface DeviceService {
      * @param fkProductId
      * @return
      */
-    List<DeviceInfo> getDeviceByProduct(String fkProductId);
+    List<DeviceVO> getDeviceByProduct(String fkProductId);
 
     /**
      * 添加设备
@@ -31,7 +34,10 @@ public interface DeviceService {
      * @param deviceId
      * @return
      */
-    DeviceInfo selectById(String deviceId);
+    DeviceVO selectById(String deviceId);
+
+
+    DeviceInfo selectInfoById(String deviceId);
 
     /**
      * 更新设备
@@ -45,6 +51,18 @@ public interface DeviceService {
      * @param name
      * @return
      */
-    List<DeviceInfo> getDeviceByName(String name);
+    List<DeviceVO> getDeviceByName(String name);
+
+    /**
+     * 查询所有设备信息
+     * @return
+     */
+    List<DeviceVO> selectAllDeviceVO();
+
+    DeviceReflectionVO deviceReflection(String deviceId);
+
+
+
+
 
 }

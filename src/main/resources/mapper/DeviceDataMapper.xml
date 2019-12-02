@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.xd.bdilab.iotplatform.mapper.DeviceDataMapper">
+    <resultMap id="BaseResultMap" type="edu.xd.bdilab.iotplatform.dao.DeviceData">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="gateway_id" jdbcType="VARCHAR" property="gatewayId" />
+        <result column="meta_data" jdbcType="VARCHAR" property="metaData" />
+        <result column="format_data" jdbcType="VARCHAR" property="formatData" />
+        <result column="time_stamp" jdbcType="VARCHAR" property="timeStamp"/>
+    </resultMap>
+    <select id="selectById" parameterType="Integer" resultType="edu.xd.bdilab.iotplatform.dao.DeviceData">
+        select
+         id as id,
+         gateway_id as gatewayId,
+         meta_data as metaData,
+         format_data as formatData,
+         time_stamp as timeStamp
+     from device_data WHERE id=#{id}
+  </select>
+    <insert id="insertSelective" parameterType="edu.xd.bdilab.iotplatform.dao.DeviceData"  useGeneratedKeys="true" >
+        insert into device_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gatewayId != null">
+                gateway_id,
+            </if>
+            <if test="metaData != null">
+                meta_data,
+            </if>
+            <if test="formatData != null">
+                format_data,
+            </if>
+            <if test="timeStamp != null">
+                time_stamp,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="gatewayId != null">
+                #{gatewayId,jdbcType=VARCHAR},
+            </if>
+            <if test="metaData != null">
+                #{metaData,jdbcType=VARCHAR},
+            </if>
+            <if test="formatData != null">
+                #{formatData,jdbcType=VARCHAR},
+            </if>
+            <if test="timeStamp != null">
+                #{timeStamp,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectByTime" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select *
+        from device_data
+        <where>
+            <if test="param.gatewayId!= null and param.gatewayId!= ''">
+                gateway_id = #{param.gatewayId}
+            </if>
+            <if test="param.beginTime!=null and param.beginTime!=''">
+                <![CDATA[  and DATE_FORMAT(time_stamp, '%Y-%m-%d %T:%i:%s') > DATE_FORMAT(#{param.beginTime}, '%Y-%m-%d %T:%i:%s')   ]]>
+            </if>
+            <if test="param.endTime!=null and param.endTime!=''">
+                <![CDATA[  and DATE_FORMAT(time_stamp, '%Y-%m-%d %T:%i:%s') <= DATE_FORMAT(#{param.endTime}, '%Y-%m-%d %T:%i:%s')   ]]>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select *
+        from device_data
+        where gateway_id = #{gatewayId}
+    </select>
+
+    <select id="selectRecent" parameterType="java.lang.String" resultType="edu.xd.bdilab.iotplatform.dao.DeviceData">
+        select
+             id as id,
+            gateway_id as gatewayId,
+            meta_data as metaData,
+            format_data as formatData,
+            time_stamp as timeStamp
+        from device_data
+        where gateway_id = #{gatewayId}
+        order by id desc limit 1
+    </select>
+
+    <select id="selectCount" resultType="Integer">
+        select count(*)
+        from device_data
+    </select>
+
+</mapper>

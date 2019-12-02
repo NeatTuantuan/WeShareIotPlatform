@@ -1,5 +1,6 @@
 package edu.xd.bdilab.iotplatform.mapper;
 
+import edu.xd.bdilab.iotplatform.dao.UserRoleRelation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,13 @@ public class UserRoleRelationMapperTest {
     UserRoleRelationMapper userRoleRelationMapper;
     @Test
     public void selectRoleIdByUserId() {
-        System.out.println(userRoleRelationMapper.selectRoleIdByUserId(1));
+    }
+
+    @Test
+    public void insertUserRoleRelation() {
+        UserRoleRelation userRoleRelation = new UserRoleRelation();
+        userRoleRelation.setFkUserId(1);
+        userRoleRelation.setFkRoleId(1);
+        System.out.println(userRoleRelationMapper.insertUserRoleRelation(userRoleRelation));
     }
 }

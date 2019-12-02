@@ -1,6 +1,7 @@
-package edu.xd.bdilab.iotplatform.service;
+package edu.xd.bdilab.iotplatform.service.user;
 
 import edu.xd.bdilab.iotplatform.dao.Role;
+import org.springframework.stereotype.Service;
 
 /**
  * @InterfaceName RoleService
@@ -10,6 +11,7 @@ import edu.xd.bdilab.iotplatform.dao.Role;
  * @Version 1.0
  * @Attention Copyright (C)，2004-2019，BDILab，XiDian University
  **/
+
 public interface RoleService {
     Role findRoleById(int role_id);
 }
