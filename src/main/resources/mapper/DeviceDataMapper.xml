@@ -53,14 +53,14 @@
         select *
         from device_data
         <where>
-            <if test="param.gatewayId != null">
+            <if test="param.gatewayId!= null and param.gatewayId!= ''">
                 gateway_id = #{param.gatewayId}
             </if>
-            <if test="param.beginTime != null and param.beginTime != ''">
-            AND time_stamp <![CDATA[>=]]> #{param.beginTime}
+            <if test="param.beginTime!=null and param.beginTime!=''">
+                <![CDATA[  and DATE_FORMAT(time_stamp, '%Y-%m-%d %T:%i:%s') > DATE_FORMAT(#{param.beginTime}, '%Y-%m-%d %T:%i:%s')   ]]>
             </if>
-            <if test="param.endTime != null and param.endTime != ''">
-            AND time_stamp <![CDATA[<=]]>#{param.endTime}
+            <if test="param.endTime!=null and param.endTime!=''">
+                <![CDATA[  and DATE_FORMAT(time_stamp, '%Y-%m-%d %T:%i:%s') <= DATE_FORMAT(#{param.endTime}, '%Y-%m-%d %T:%i:%s')   ]]>
             </if>
         </where>
     </select>

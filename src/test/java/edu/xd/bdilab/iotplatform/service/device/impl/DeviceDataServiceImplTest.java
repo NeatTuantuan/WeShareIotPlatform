@@ -35,4 +35,9 @@ public class DeviceDataServiceImplTest {
         DeviceData deviceData = deviceDataService.getRecentData("3");
         System.out.println(deviceData);
     }
+
+    @Test
+    public void selectByTime(){
+
+    }
 }
