@@ -246,6 +246,7 @@ public class DeviceController {
     public ResponseResult getDeviceDataByTime(@RequestParam("deviceId")String deviceId){
 
         String gatewayId = deviceService.selectById(deviceId).getGetwayId();
+        DeviceStateInfo deviceStateInfo = deviceStateInfoService.selectByDeviceId(deviceId);
         Map<String,String> params = new HashMap<>();
         params.put("gatewayId",gatewayId);
         //根据网关id获取开始时间；
@@ -254,6 +255,9 @@ public class DeviceController {
         params.put("endTime", DateUtil.getDate());
         Map<String,Object> deviceDataMap = new HashMap<>();
         List<DeviceData> deviceDataList = deviceDataService.selectByTime(params);
+
+        deviceStateInfo.setDeviceState((byte)0);
+        deviceStateInfoService.updateDeviceState(deviceStateInfo);
 
         deviceDataMap.put("size",deviceDataList.size());
         deviceDataMap.put("deviceDataList",deviceDataList);

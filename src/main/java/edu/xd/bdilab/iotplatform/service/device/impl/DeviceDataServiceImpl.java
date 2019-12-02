@@ -1,8 +1,10 @@
 package edu.xd.bdilab.iotplatform.service.device.impl;
 
 import edu.xd.bdilab.iotplatform.dao.DeviceData;
+import edu.xd.bdilab.iotplatform.dao.DeviceStateInfo;
 import edu.xd.bdilab.iotplatform.mapper.DeviceDataMapper;
 import edu.xd.bdilab.iotplatform.mapper.DeviceInfoMapper;
+import edu.xd.bdilab.iotplatform.mapper.DeviceStateInfoMapper;
 import edu.xd.bdilab.iotplatform.service.device.DeviceDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,8 @@ public class DeviceDataServiceImpl implements DeviceDataService  {
     DeviceDataMapper deviceDataMapper;
     @Autowired
     DeviceInfoMapper deviceInfoMapper;
+    @Autowired
+    DeviceStateInfoMapper deviceStateInfoMapper;
     @Override
     public int insertSelective(DeviceData deviceData) {
         return deviceDataMapper.insertSelective(deviceData);
@@ -51,6 +55,11 @@ public class DeviceDataServiceImpl implements DeviceDataService  {
     @Override
     public int selectCount() {
         return deviceDataMapper.selectCount();
+    }
+
+    @Override
+    public int updateDeviceState(DeviceStateInfo deviceStateInfo) {
+        return deviceStateInfoMapper.updateDeviceState(deviceStateInfo);
     }
 
 }
