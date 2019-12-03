@@ -49,18 +49,18 @@
         </trim>
     </insert>
 
-    <select id="selectByTime" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <select id="selectByTime"  resultMap="BaseResultMap">
         select *
         from device_data
         <where>
-            <if test="param.gatewayId!= null and param.gatewayId!= ''">
-                gateway_id = #{param.gatewayId}
+            <if test="gatewayId!= null and gatewayId!= ''">
+                gateway_id = #{gatewayId}
             </if>
-            <if test="param.beginTime!=null and param.beginTime!=''">
-                <![CDATA[  and DATE_FORMAT(time_stamp, '%Y-%m-%d %T:%i:%s') > DATE_FORMAT(#{param.beginTime}, '%Y-%m-%d %T:%i:%s')   ]]>
+            <if test="startTime!=null and startTime!=''">
+                <![CDATA[  and DATE_FORMAT(time_stamp, '%Y-%m-%d %T:%i:%s') >= DATE_FORMAT(#{startTime}, '%Y-%m-%d %T:%i:%s')   ]]>
             </if>
-            <if test="param.endTime!=null and param.endTime!=''">
-                <![CDATA[  and DATE_FORMAT(time_stamp, '%Y-%m-%d %T:%i:%s') <= DATE_FORMAT(#{param.endTime}, '%Y-%m-%d %T:%i:%s')   ]]>
+            <if test="endTime!=null and endTime!=''">
+                <![CDATA[  and DATE_FORMAT(time_stamp, '%Y-%m-%d %T:%i:%s') <= DATE_FORMAT(#{endTime}, '%Y-%m-%d %T:%i:%s')   ]]>
             </if>
         </where>
     </select>

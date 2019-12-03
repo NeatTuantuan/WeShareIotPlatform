@@ -28,8 +28,8 @@ public class DeviceDataServiceImpl implements DeviceDataService  {
     }
 
     @Override
-    public List<DeviceData> selectByTime(Map<String, String> params) {
-        return deviceDataMapper.selectByTime(params);
+    public List<DeviceData> selectByTime(String gatewayId,String startTime,String endTime) {
+        return deviceDataMapper.selectByTime(gatewayId,startTime,endTime);
     }
 
     @Override

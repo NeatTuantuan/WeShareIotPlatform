@@ -244,28 +244,12 @@ public class DeviceController {
 
         String gatewayId = deviceService.selectById(deviceId).getGetwayId();
         DeviceStateInfo deviceStateInfo = deviceStateInfoService.selectByDeviceId(deviceId);
-        Map<String,String> params = new HashMap<>();
-        params.put("gatewayId",gatewayId);
+
         //根据网关id获取开始时间；
         String startTime = redisUtil.getTime(gatewayId);
-        Date startDate = DateUtil.stringToDate(startTime);
-        params.put("startTime",startTime);
-        params.put("endTime", DateUtil.getDate());
+        String endTime = DateUtil.getDate();
         Map<String,Object> deviceDataMap = new HashMap<>();
-
-        List<DeviceData> deviceGetDataList = deviceDataService.selectByTime(params);
-
-        List<DeviceData> deviceDataList = new ArrayList<>();
-
-        for (DeviceData deviceData:deviceGetDataList){
-            String time = deviceData.getTimeStamp();
-            Date date = DateUtil.stringToDate(time);
-
-            if (date.after(startDate)){
-                deviceDataList.add(deviceData);
-            }
-        }
-
+        List<DeviceData> deviceDataList = deviceDataService.selectByTime(gatewayId,startTime,endTime);
 
         deviceStateInfo.setDeviceState((byte)0);
         deviceStateInfoService.updateDeviceState(deviceStateInfo);

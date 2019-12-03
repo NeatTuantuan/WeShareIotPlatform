@@ -11,7 +11,7 @@ import java.util.Map;
 public interface DeviceDataService {
     int insertSelective(DeviceData deviceData);
 
-    List<DeviceData> selectByTime(Map<String,String> params);
+    List<DeviceData> selectByTime(String gatewayId,String startTime,String endTime);
 
     List<DeviceData> selectAll(String gatewayId);
 

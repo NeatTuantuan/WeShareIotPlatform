@@ -59,15 +59,15 @@ public class DeviceDataMapperTest {
     public void selectByTime(){
         Map<String,String> params = new HashMap<>();
         params.put("gatewayId","@@@864376049834723");
-        params.put("beginTime ","2019-12-02 11:16:00");
+        params.put("beginTime ","2019-12-02 11:15:36");
         params.put("endTime","2019-12-02 11:16:45");
 
-        String s1="2019-12-02 11:13:15";
-        String s2 = "2019-12-02 11:16:45";
 
 
-        List<DeviceData> list = deviceDataMapper.selectByTime(params);
+        List<DeviceData> list = deviceDataMapper.selectByTime("@@@864376049834723","2019-12-02 11:15:36","2019-12-02 11:16:45");
         System.out.println(list.get(0));
+        System.out.println(list.get(list.size()-1));
+        System.out.println(list.size());
     }
 
     @Test
@@ -87,5 +87,8 @@ public class DeviceDataMapperTest {
     }
 
 
-
+    @Test
+    public void selectTest(){
+        System.out.println(deviceDataMapper.selectById(19).getTimeStamp());
+    }
 }
