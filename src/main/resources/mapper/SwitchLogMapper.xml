@@ -9,4 +9,37 @@
          fk_device_id as fkDeviceId
         from switch_log WHERE id=#{id}
     </select>
+    
+    <insert id="insertSelective" parameterType="edu.xd.bdilab.iotplatform.dao.SwitchLog">
+        insert into switch_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="fkDeviceId != null">
+                fk_device_id,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP },
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP },
+            </if>
+            <if test="fkDeviceId != null">
+                #{fkDeviceId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 </mapper>

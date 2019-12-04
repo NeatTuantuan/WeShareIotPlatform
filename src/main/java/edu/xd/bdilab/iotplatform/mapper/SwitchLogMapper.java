@@ -16,4 +16,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface SwitchLogMapper {
     SwitchLog selectById(int id);
+
+    int insertSelective(SwitchLog switchLog);
 }
