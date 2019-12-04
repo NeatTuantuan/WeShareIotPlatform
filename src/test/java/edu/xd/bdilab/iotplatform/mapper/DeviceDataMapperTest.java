@@ -81,6 +81,16 @@ public class DeviceDataMapperTest {
         System.out.println(deviceDataMapper.selectCount());
     }
 
+    @Test
+    public void selectByParams(){
+        Map<String, Object> params = new HashMap<>();
+        params.put(new String("gatewayId"),new String("@@@864376049817702"));
+        params.put("beginTime","2019-11-26 20:01:53");
+        params.put("endTime","2019-11-26 21:10:10");
+        System.out.println(deviceDataMapper.selectByParams(params).size());
+    }
+
+
 
 
 }

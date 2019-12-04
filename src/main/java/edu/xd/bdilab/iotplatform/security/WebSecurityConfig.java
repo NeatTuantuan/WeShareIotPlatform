@@ -66,11 +66,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .authenticationEntryPoint(authenticationEntryPoint)
 //                .and()
                 .authorizeRequests()
-                .antMatchers("/login", "/assets/**", "/CSS/**", "/HTML/**", "/JavaScript/**").permitAll()
-                .anyRequest().permitAll();
+                .antMatchers("/login", "/assets/**", "/CSS/**", "/HTML/**", "/JavaScript/**","/swagger-ui.html","/swagger-resources/**").permitAll();
+//                .anyRequest().permitAll();qw
 
 
-//                .anyRequest().authenticated()//其他URL需要身份认证
+//                .anyRequest().authenticated();//其他URL需要身份认证
 //                .and()
 //
 //                .formLogin() //开启登录

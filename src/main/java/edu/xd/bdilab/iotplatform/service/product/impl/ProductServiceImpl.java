@@ -8,7 +8,9 @@ import edu.xd.bdilab.iotplatform.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -65,6 +67,31 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductInfo selectByProductName(String productName) {
         return productInfoMapper.selectByProductName(productName);
+    }
+
+    @Override
+    public Map<String, Object> productInfoStatistics() {
+        Map<String, Object> map = new HashMap<>();
+        String name = null;
+        List<ProductInfo> productInfoList = this.getAllProductsInfo();
+        map.put("productCount",productInfoList.size());
+
+        if (productInfoList.size() == 0){
+            return map;
+        }
+
+        for (ProductInfo productInfo : productInfoList){
+            name = productInfo.getProductName();
+            map.put(name,
+                    deviceInfoMapper.selectByProduct(
+                            productInfo.getProductId()
+                    ).size()
+            );
+        }
+
+        return map;
+
+
     }
 
 

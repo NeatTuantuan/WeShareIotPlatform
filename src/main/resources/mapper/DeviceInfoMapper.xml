@@ -160,5 +160,10 @@
      from device_info
   </select>
 
+  <select id="selectCount" parameterType="java.lang.String" resultType="Integer">
+        select count(*)
+        from device_info where fk_product_id = #{fkProductId}
+    </select>
+
 
 </mapper>

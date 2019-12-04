@@ -84,4 +84,10 @@ public class DeviceServiceImplTest {
         List<DeviceVO> deviceInfos = deviceService.getDeviceByName("test");
         System.out.println(deviceInfos);
     }
+
+    @Test
+    public void deviceInfoStatistics(){
+        System.out.println(deviceService.deviceInfoStatistics());
+    }
+
 }

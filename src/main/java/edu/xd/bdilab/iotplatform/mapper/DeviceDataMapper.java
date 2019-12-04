@@ -39,4 +39,6 @@ public interface DeviceDataMapper {
      * @return
      */
     int selectCount();
+
+    List<DeviceData> selectByParams(Map<String,Object> params);
 }

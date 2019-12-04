@@ -20,6 +20,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -245,7 +246,9 @@ public class DeviceController {
     @ApiOperation(value = "获得一次采集的所有数据")
     public ResponseResult getDeviceDataByTime(@RequestParam("deviceId")String deviceId){
 
+        //获取设备网关id
         String gatewayId = deviceService.selectById(deviceId).getGetwayId();
+        //获取设备状态
         DeviceStateInfo deviceStateInfo = deviceStateInfoService.selectByDeviceId(deviceId);
         Map<String,String> params = new HashMap<>();
         params.put("gatewayId",gatewayId);
@@ -253,6 +256,7 @@ public class DeviceController {
         String startTime = redisUtil.getTime(gatewayId);
         params.put("startTime",startTime);
         params.put("endTime", DateUtil.getDate());
+
         Map<String,Object> deviceDataMap = new HashMap<>();
         List<DeviceData> deviceDataList = deviceDataService.selectByTime(params);
 
@@ -357,5 +361,13 @@ public class DeviceController {
             responseResult.setMessage(DeviceCode.GET_DEVICE_PRODUCT_DATA_FAILURE.getMessage());
             return responseResult;
         }
+    }
+
+    @GetMapping(value = "device/DeviceInfoStatistics")
+    @ApiOperation(value = "所有设备的统计信息（一共有几个设备，每个设备信息有多少条）")
+    public ResponseResult DeviceInfoStatistics(){
+        Map<String, Integer> map = deviceService.deviceInfoStatistics();
+        ResponseResult responseResult = new ResponseResult(true,"001","统计设备信息成功",map);
+        return responseResult;
     }
 }

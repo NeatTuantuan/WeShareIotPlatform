@@ -19,8 +19,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DeviceServiceImpl implements DeviceService {
@@ -162,6 +164,7 @@ public class DeviceServiceImpl implements DeviceService {
         return deviceReflectionVO;
     }
 
+
     /**
      * deviceInfo实体类转deviceVO
      * @param deviceInfoList
@@ -206,5 +209,27 @@ public class DeviceServiceImpl implements DeviceService {
         return deviceDataVO;
     }
 
+
+    @Override
+    public Map<String, Integer> deviceInfoStatistics() {
+        Map<String, Integer> map = new HashMap<>();
+        List<DeviceVO> deviceVOList = this.selectAllDeviceVO();
+
+        map.put("deviceCount",deviceVOList.size());
+
+        if (deviceVOList.size() == 0){
+            return map;
+        }
+
+        for (DeviceVO deviceVO : deviceVOList){
+            map.put(deviceVO.getDeviceName(),
+                        deviceDataMapper.selectAll(
+                                deviceVO.getGetwayId()
+                        ).size()
+                    );
+        }
+
+        return map;
+    }
 
 }

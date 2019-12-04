@@ -88,4 +88,21 @@
         from device_data
     </select>
 
+    <select id="selectByParams" parameterType="java.util.Map" resultType="edu.xd.bdilab.iotplatform.dao.DeviceData">
+        select *
+        from device_data
+        <where>
+            <if test="gatewayId!= null and gatewayId!= ''">
+                gateway_id = #{param.gatewayId}
+            </if>
+            <if test="beginTime!=null and beginTime!=''">
+                <![CDATA[  and DATE_FORMAT(time_stamp, '%Y-%m-%d %T:%i:%s') >= DATE_FORMAT(#{param.beginTime}, '%Y-%m-%d %T:%i:%s')   ]]>
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                <![CDATA[  and DATE_FORMAT(time_stamp, '%Y-%m-%d %T:%i:%s') <= DATE_FORMAT(#{param.endTime}, '%Y-%m-%d %T:%i:%s')   ]]>
+            </if>
+        </where>
+    </select>
+
+
 </mapper>

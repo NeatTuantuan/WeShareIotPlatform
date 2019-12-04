@@ -12,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName ProductController
@@ -170,6 +172,14 @@ public class ProductController {
             responseResult.setMessage(ProductCode.NO_REQUESTED_PRODUCT.getMessage());
         }
 
+        return responseResult;
+    }
+
+    @GetMapping(value = "product/productInfoStatistics")
+    @ApiOperation(value = "所有产品的统计信息")
+    public ResponseResult productInfoStatistics(){
+        Map<String, Object> map = productService.productInfoStatistics();
+        ResponseResult responseResult = new ResponseResult(true,"001","统计结果成功",map);
         return responseResult;
     }
 }
