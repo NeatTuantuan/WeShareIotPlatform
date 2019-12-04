@@ -27,10 +27,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -250,15 +247,13 @@ public class DeviceController {
         String gatewayId = deviceService.selectById(deviceId).getGetwayId();
         //获取设备状态
         DeviceStateInfo deviceStateInfo = deviceStateInfoService.selectByDeviceId(deviceId);
-        Map<String,String> params = new HashMap<>();
-        params.put("gatewayId",gatewayId);
+
         //根据网关id获取开始时间；
         String startTime = redisUtil.getTime(gatewayId);
-        params.put("startTime",startTime);
-        params.put("endTime", DateUtil.getDate());
 
+        String endTime = DateUtil.getDate();
         Map<String,Object> deviceDataMap = new HashMap<>();
-        List<DeviceData> deviceDataList = deviceDataService.selectByTime(params);
+        List<DeviceData> deviceDataList = deviceDataService.selectByTime(gatewayId,startTime,endTime);
 
         deviceStateInfo.setDeviceState((byte)0);
         deviceStateInfoService.updateDeviceState(deviceStateInfo);

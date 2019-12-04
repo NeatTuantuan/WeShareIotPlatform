@@ -29,6 +29,11 @@ public class DateUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(getDate());
+        String s1="2019-12-02 11:13:15";
+        Date date1 = DateUtil.stringToDate(s1);
+        System.out.println(date1);
+        String s2 = "2019-12-02 11:16:45";
+        Date date2 = DateUtil.stringToDate(s2);
+        System.out.println(date2.after(date1));
     }
 }

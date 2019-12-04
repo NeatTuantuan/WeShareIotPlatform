@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -57,11 +59,14 @@ public class DeviceDataMapperTest {
     public void selectByTime(){
         Map<String,String> params = new HashMap<>();
         params.put("gatewayId","@@@864376049834723");
-        params.put("beginTime ","2019-11-20 16:26:14");
-        params.put("endTime","2019-11-20 16:26:28");
+        params.put("beginTime ","2019-12-02 11:15:36");
+        params.put("endTime","2019-12-02 11:16:45");
 
 
-        List<DeviceData> list = deviceDataMapper.selectByTime(params);
+
+        List<DeviceData> list = deviceDataMapper.selectByTime("@@@864376049834723","2019-12-02 11:15:36","2019-12-02 11:16:45");
+        System.out.println(list.get(0));
+        System.out.println(list.get(list.size()-1));
         System.out.println(list.size());
     }
 
@@ -92,5 +97,8 @@ public class DeviceDataMapperTest {
 
 
 
-
+    @Test
+    public void selectTest(){
+        System.out.println(deviceDataMapper.selectById(19).getTimeStamp());
+    }
 }

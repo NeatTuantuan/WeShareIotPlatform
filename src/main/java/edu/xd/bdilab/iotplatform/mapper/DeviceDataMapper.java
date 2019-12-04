@@ -23,7 +23,9 @@ public interface DeviceDataMapper {
 
     int insertSelective(DeviceData deviceData);
 
-    List<DeviceData> selectByTime(@Param("param") Map<String,String> params);
+    List<DeviceData> selectByTime(@Param("gatewayId") String gatewayId,
+                                  @Param("startTime")String startTime,
+                                  @Param("endTime")String endTime);
 
     List<DeviceData> selectAll(@Param("gatewayId")String gatewayId);
 
