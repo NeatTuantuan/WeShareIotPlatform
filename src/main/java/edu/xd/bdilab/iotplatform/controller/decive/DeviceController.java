@@ -8,11 +8,8 @@ import edu.xd.bdilab.iotplatform.dao.*;
 import edu.xd.bdilab.iotplatform.netty.redis.RedisUtil;
 import edu.xd.bdilab.iotplatform.netty.util.DateUtil;
 import edu.xd.bdilab.iotplatform.netty.util.RadomUtil;
-import edu.xd.bdilab.iotplatform.service.device.DeviceDataService;
+import edu.xd.bdilab.iotplatform.service.device.*;
 
-import edu.xd.bdilab.iotplatform.service.device.DeviceInfoService;
-import edu.xd.bdilab.iotplatform.service.device.DeviceService;
-import edu.xd.bdilab.iotplatform.service.device.DeviceStateInfoService;
 import edu.xd.bdilab.iotplatform.service.product.ProductService;
 import edu.xd.bdilab.iotplatform.vo.DeviceReflectionVO;
 import edu.xd.bdilab.iotplatform.vo.DeviceVO;
@@ -45,6 +42,8 @@ public class DeviceController {
     DeviceStateInfoService deviceStateInfoService;
     @Autowired
     DeviceInfoService deviceInfoService;
+    @Autowired
+    SwitchLogService switchLogService;
 
 
     RedisUtil redisUtil = new RedisUtil();
@@ -254,6 +253,13 @@ public class DeviceController {
         String endTime = DateUtil.getDate();
         Map<String,Object> deviceDataMap = new HashMap<>();
         List<DeviceData> deviceDataList = deviceDataService.selectByTime(gatewayId,startTime,endTime);
+
+        //将开始时间和结束时间以及设备id存入mysql
+        SwitchLog switchLog = new SwitchLog();
+        switchLog.setFkDeviceId(deviceId);
+        switchLog.setStartTime(DateUtil.stringToDate(startTime));
+        switchLog.setEndTime(DateUtil.stringToDate(endTime));
+        switchLogService.insertSwitchLog(switchLog);
 
         deviceStateInfo.setDeviceState((byte)0);
         deviceStateInfoService.updateDeviceState(deviceStateInfo);
