@@ -1,4 +1,4 @@
-package edu.xd.bdilab.iotplatform.dao;
+package edu.xd.bdilab.iotplatform.dao.auth;
 
 import lombok.Data;
 import lombok.ToString;

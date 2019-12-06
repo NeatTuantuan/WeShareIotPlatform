@@ -1,4 +1,4 @@
-package edu.xd.bdilab.iotplatform.dao;
+package edu.xd.bdilab.iotplatform.dao.rule;
 
 import lombok.Data;
 import lombok.ToString;
@@ -13,7 +13,7 @@ import lombok.ToString;
  **/
 @Data
 @ToString
-public class DeviceThresholdRule {
+public class DeviceThresholdRule extends Rule{
     /**
      *id，自增，唯一标识一条记录
      */
@@ -35,9 +35,9 @@ public class DeviceThresholdRule {
     /**
      *较重阈值
      */
-    private int heavy_level;
+    private int heavyLevel;
     /**
      *严重阈值
      */
-    private int serious_level;
+    private int seriousLevel;
 }

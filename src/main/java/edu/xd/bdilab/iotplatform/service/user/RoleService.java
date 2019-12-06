@@ -1,7 +1,6 @@
 package edu.xd.bdilab.iotplatform.service.user;
 
-import edu.xd.bdilab.iotplatform.dao.Role;
-import org.springframework.stereotype.Service;
+import edu.xd.bdilab.iotplatform.dao.auth.Role;
 
 /**
  * @InterfaceName RoleService

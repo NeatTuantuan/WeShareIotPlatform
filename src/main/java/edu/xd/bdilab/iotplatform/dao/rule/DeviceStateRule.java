@@ -1,4 +1,4 @@
-package edu.xd.bdilab.iotplatform.dao;
+package edu.xd.bdilab.iotplatform.dao.rule;
 
 import lombok.Data;
 import lombok.ToString;
@@ -13,7 +13,7 @@ import lombok.ToString;
  **/
 @Data
 @ToString
-public class DeviceStateRule {
+public class DeviceStateRule extends Rule{
     /**
      * id，自增，唯一标识一条记录
      */

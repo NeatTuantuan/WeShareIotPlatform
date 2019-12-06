@@ -1,6 +1,6 @@
 package edu.xd.bdilab.iotplatform.mapper;
 
-import edu.xd.bdilab.iotplatform.dao.UserRoleRelation;
+import edu.xd.bdilab.iotplatform.dao.auth.UserRoleRelation;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
