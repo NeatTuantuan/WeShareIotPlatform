@@ -1,9 +1,13 @@
 package edu.xd.bdilab.iotplatform.service.device;
 
+import edu.xd.bdilab.iotplatform.dao.DeviceData;
 import edu.xd.bdilab.iotplatform.dao.DeviceInfo;
+import edu.xd.bdilab.iotplatform.vo.DeviceReflectionVO;
 import edu.xd.bdilab.iotplatform.vo.DeviceVO;
+import io.swagger.models.auth.In;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DeviceService {
     /**
@@ -50,5 +54,24 @@ public interface DeviceService {
      * @return
      */
     List<DeviceVO> getDeviceByName(String name);
+
+    /**
+     * 查询所有设备信息
+     * @return
+     */
+    List<DeviceVO> selectAllDeviceVO();
+
+    /**
+     * 设备影子
+     * @param deviceId
+     * @return
+     */
+    DeviceReflectionVO deviceReflection(String deviceId);
+
+    /**
+     * 查看所有设备数量，每个设备对应的采集总数。
+     * @return
+     */
+    Map<String, Integer> deviceInfoStatistics();
 
 }

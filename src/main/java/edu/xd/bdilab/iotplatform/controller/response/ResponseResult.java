@@ -28,6 +28,16 @@ public class ResponseResult {
         this.data = data;
         this.meta = meta;
     }
+    public ResponseResult(boolean success,String code,String message){
+
+        this.meta=new MetaData(success,code,message);
+    }
+
+    public ResponseResult(boolean success,String code,String message,Object data){
+
+        this(success, code, message);
+        this.data=data;
+    }
 
     public void setSuccess(Boolean success){
         if(this.meta == null){

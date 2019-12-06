@@ -15,6 +15,6 @@ public class ProductInfoMapperTest {
 
     @Test
     public void selectByPrimaryKey() {
-        System.out.println(productInfoMapper.selectByProductName("亮度传感器").getProductId());
+        System.out.println(productInfoMapper.selectByPrimaryKey("2"));
     }
 }

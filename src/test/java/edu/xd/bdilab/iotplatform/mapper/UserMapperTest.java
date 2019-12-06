@@ -1,5 +1,6 @@
 package edu.xd.bdilab.iotplatform.mapper;
 
+import edu.xd.bdilab.iotplatform.dao.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,5 +16,13 @@ public class UserMapperTest {
     @Test
     public void selectByUserName() {
         System.out.println(userMapper.selectByUserName("user").getPassword());
+    }
+
+    @Test
+    public void insertUser() {
+        User user = new User();
+        user.setUserName("test");
+        user.setPassword("123456");
+        System.out.println(userMapper.insertUser(user));
     }
 }

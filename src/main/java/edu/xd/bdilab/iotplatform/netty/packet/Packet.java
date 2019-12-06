@@ -1,4 +1,4 @@
-package edu.xd.bdilab.iotplatform.netty.Packet;
+package edu.xd.bdilab.iotplatform.netty.packet;
 
 import lombok.Data;
 
@@ -12,5 +12,6 @@ public abstract class Packet {
 
     private String channelId;
 
+    public abstract String getFlag();
 
 }

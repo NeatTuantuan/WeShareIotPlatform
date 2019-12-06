@@ -46,9 +46,7 @@ public class NettyServer implements ApplicationRunner {
                     protected void initChannel(NioSocketChannel ch) {
                         ch.pipeline().addLast(new SendCodeHandler());
                         ch.pipeline().addLast(new DataDecoder());
-                        ch.pipeline().addLast(new GatewayHandler());
-                        ch.pipeline().addLast(new THHandler());
-                        ch.pipeline().addLast(new PMHandler());
+                        ch.pipeline().addLast(PacketHandler.INSTACNE);
                     }
                 })
                 .bind(8088);

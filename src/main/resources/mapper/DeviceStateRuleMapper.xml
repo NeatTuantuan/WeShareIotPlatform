@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.xd.bdilab.iotplatform.mapper.DeviceStateRuleMapper">
+    <select id="selectAllRule" resultType="edu.xd.bdilab.iotplatform.dao.DeviceStateRule">
+        select *
+     from device_state_rule
+  </select>
+
+
+    <insert id="insertDeviceStateRule" useGeneratedKeys="true" keyProperty="id" parameterType="edu.xd.bdilab.iotplatform.dao.DeviceStateRule">
+        insert into device_state_rule (rule_type, fk_product_id, offline_threshold)
+        values (#{ruleType}, #{fkProductId},#{offlineThreshold})
+    </insert>
+
+    <update id="updateRule"  parameterType="edu.xd.bdilab.iotplatform.dao.DeviceStateRule">
+        update device_state_rule
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="ruleType != null">
+                rule_type = #{ruleType},
+            </if>
+            <if test="fkProductId != null">
+                fk_product_id = #{fkProductId},
+            </if>
+            <if test="offlineThreshold != null">
+                offline_threshold = #{offlineThreshold,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+        delete from device_state_rule
+        where id = #{id}
+    </delete>
+
+
+</mapper>

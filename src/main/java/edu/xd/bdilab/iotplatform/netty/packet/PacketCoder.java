@@ -1,11 +1,10 @@
-package edu.xd.bdilab.iotplatform.netty.Packet;
+package edu.xd.bdilab.iotplatform.netty.packet;
 
 
-import edu.xd.bdilab.iotplatform.netty.hbase.HbaseUtil;
 import edu.xd.bdilab.iotplatform.netty.redis.RedisUtil;
-import edu.xd.bdilab.iotplatform.netty.responsechain.MainDecoder;
-import edu.xd.bdilab.iotplatform.netty.responsechain.PMDecoder;
-import edu.xd.bdilab.iotplatform.netty.responsechain.THDecoder;
+import edu.xd.bdilab.iotplatform.netty.responsechain.MainEncoder;
+import edu.xd.bdilab.iotplatform.netty.responsechain.PMEncoder;
+import edu.xd.bdilab.iotplatform.netty.responsechain.THEncoder;
 import edu.xd.bdilab.iotplatform.netty.util.DataUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -14,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PacketCoder {
 
-    public Packet decode (ByteBuf byteBuf, ChannelHandlerContext ctx){
+    public Packet encode(ByteBuf byteBuf, ChannelHandlerContext ctx){
 
         //解析源数据
         int lenData = byteBuf.readableBytes();
@@ -23,12 +22,13 @@ public class PacketCoder {
         String rawData = DataUtil.encode(dataBytes);
 
         //责任链
-        MainDecoder thDecoder = new THDecoder();
-        MainDecoder pmDecoder = new PMDecoder();
+        MainEncoder thEncoder = new THEncoder();
+        MainEncoder pmEncoder = new PMEncoder();
 
-        thDecoder.setNext(pmDecoder);
 
-        return  thDecoder.decode(rawData,ctx);
+        thEncoder.setNext(pmEncoder);
+
+        return  thEncoder.encode(rawData,ctx);
 
 //        byteBuf.markReaderIndex();
 //        int lenData = byteBuf.readableBytes();

@@ -150,5 +150,20 @@
     </where>
   </select>
 
+  <select id="selectAllDevice" resultType="edu.xd.bdilab.iotplatform.dao.DeviceInfo">
+        select
+         device_id as deviceId,
+         fk_product_id as fkProductId,
+         device_name as deviceName,
+         create_time as createTime,
+         getway_id as getwayId
+     from device_info
+  </select>
+
+  <select id="selectCount" parameterType="java.lang.String" resultType="Integer">
+        select count(*)
+        from device_info where fk_product_id = #{fkProductId}
+    </select>
+
 
 </mapper>

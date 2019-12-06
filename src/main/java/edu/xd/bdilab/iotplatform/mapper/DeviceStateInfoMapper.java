@@ -2,6 +2,9 @@ package edu.xd.bdilab.iotplatform.mapper;
 
 import edu.xd.bdilab.iotplatform.dao.DeviceStateInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @InterfaceName DeviceStateInfoMapper
@@ -12,6 +15,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @Attention Copyright (C)，2004-2019，BDILab，XiDian University
  **/
 @Mapper
+@Component
 public interface DeviceStateInfoMapper {
     /**
      * 根据id查看状态设备
@@ -40,4 +44,8 @@ public interface DeviceStateInfoMapper {
      * @return
      */
     int deleteByFkDeviceId(String fkDeviceId);
+
+    int updateDeviceState(DeviceStateInfo deviceStateInfo);
+
+    List<DeviceStateInfo> selectDeviceStateInfoByState(int deviceState);
 }

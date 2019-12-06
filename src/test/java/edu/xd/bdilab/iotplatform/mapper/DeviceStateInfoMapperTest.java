@@ -1,6 +1,7 @@
 package edu.xd.bdilab.iotplatform.mapper;
 
 import edu.xd.bdilab.iotplatform.dao.DeviceStateInfo;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,16 @@ public class DeviceStateInfoMapperTest {
     @Test
     public void delete(){
         System.out.println(deviceStateInfoMapper.deleteByFkDeviceId("5"));
+    }
+
+    @Test
+    public void update(){
+        DeviceStateInfo deviceStateInfo = deviceStateInfoMapper.selectByDeviceId("1");
+        deviceStateInfo.setDeviceState((byte) 1);
+        deviceStateInfoMapper.updateDeviceState(deviceStateInfo);
+    }
+    @Test
+    public void selectDeviceStateInfoByState(){
+        System.out.println(deviceStateInfoMapper.selectDeviceStateInfoByState(1));
     }
 }

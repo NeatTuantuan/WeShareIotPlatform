@@ -55,4 +55,6 @@ public interface UserRoleRelationMapper {
      * @mbggenerated Mon Nov 04 20:19:41 CST 2019
      */
     int updateByPrimaryKey(UserRoleRelation record);
+
+    int insertUserRoleRelation(UserRoleRelation userRoleRelation);
 }

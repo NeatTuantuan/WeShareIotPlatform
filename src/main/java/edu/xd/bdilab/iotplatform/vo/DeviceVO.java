@@ -1,5 +1,6 @@
 package edu.xd.bdilab.iotplatform.vo;
 
+import edu.xd.bdilab.iotplatform.dao.ProductInfo;
 import lombok.Data;
 import lombok.ToString;
 
@@ -44,6 +45,11 @@ public class DeviceVO {
      * 设备状态（默认关闭）：
      * 1.开启
      * 0.关闭
+     */
+    private ProductInfo productInfo;
+
+    /**
+     * 设备状态
      */
     private Byte deviceState;
 }
