@@ -1,6 +1,8 @@
 package edu.xd.bdilab.iotplatform.mapper;
 
+import edu.xd.bdilab.iotplatform.dao.rule.DeviceStateRule;
 import edu.xd.bdilab.iotplatform.dao.rule.DeviceThresholdRule;
+import edu.xd.bdilab.iotplatform.dao.rule.Rule;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 

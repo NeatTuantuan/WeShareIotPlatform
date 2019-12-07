@@ -40,16 +40,15 @@ public class RuleServiceImpl implements RuleService {
 
     /**
      * 添加规则
-     * @param rule
-     * @param type
+     * @param ruleMap
      * @return
      */
     @Override
-    public int addRules(Rule rule,int type) {
-        if (type == 0){
-            return deviceStateRuleMapper.insertDeviceStateRule((DeviceStateRule) rule);
-        }else{
-            return deviceThresholdRuleMapper.insertDeviceThresholdRule((DeviceThresholdRule) rule);
+    public int addRules(Map<String, Object> ruleMap){
+        if (ruleMap.get("resultType") == new Integer(1)){
+            return deviceStateRuleMapper.insertDeviceStateRule((DeviceStateRule) ruleMap.get("ruleInstance"));
+        }else {
+            return deviceThresholdRuleMapper.insertDeviceThresholdRule((DeviceThresholdRule) ruleMap.get("ruleInstance"))
         }
     }
 }

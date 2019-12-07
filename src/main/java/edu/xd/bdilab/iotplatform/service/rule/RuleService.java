@@ -13,7 +13,7 @@ public interface RuleService {
     /**
      * 添加规则
      */
-    int addRules(Rule rule,int type);
+    int addRules(Map<String, Object> ruleMap);
 
 
 
