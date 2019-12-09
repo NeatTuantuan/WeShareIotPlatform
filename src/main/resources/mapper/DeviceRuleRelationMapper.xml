@@ -4,10 +4,10 @@
     <select id="selectAllRelation" resultType="edu.xd.bdilab.iotplatform.dao.rule.DeviceRuleRelation">
         select
             id as id,
-            rule_type as ruleType,
-            fk_product_id as fkProductId,
-            offline_threshold as offlineThreshold
-        from device_state_rule
+            fk_device_id as fkDeviceId,
+            fk_rule_id as fkRuleId,
+            rule_classification as ruleClassification
+        from device_rule_relation
     </select>
 
 

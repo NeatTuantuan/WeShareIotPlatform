@@ -20,4 +20,11 @@ public class DeviceRuleRelationMapperTest {
         deviceRuleRelation.setRuleClassification(0);
         deviceRuleRelationMapper.insertDeviceRuleRelation(deviceRuleRelation);
     }
+
+    @Test
+    public void selectAllRelation() {
+        System.out.println(deviceRuleRelationMapper.selectAllRelation());
+    }
+
+
 }

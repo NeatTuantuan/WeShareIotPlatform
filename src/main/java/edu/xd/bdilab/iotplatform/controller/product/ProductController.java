@@ -176,10 +176,16 @@ public class ProductController {
     }
 
     @GetMapping(value = "product/productInfoStatistics")
-    @ApiOperation(value = "所有产品的统计信息")
+    @ApiOperation(value = "所有产品的基础统计信息")
     public ResponseResult productInfoStatistics(){
         Map<String, Object> map = productService.productInfoStatistics();
         ResponseResult responseResult = new ResponseResult(true,"001","统计结果成功",map);
         return responseResult;
+    }
+
+    @GetMapping(value = "product/productDataStatistics")
+    @ApiOperation(value = "所有产品的数据统计信息")
+    public ResponseResult productDataStatistics(){
+        return new ResponseResult(true,"001","统计成功",productService.productDataStatistics());
     }
 }
