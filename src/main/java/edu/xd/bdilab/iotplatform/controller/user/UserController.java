@@ -1,7 +1,7 @@
 package edu.xd.bdilab.iotplatform.controller.user;
 
 import edu.xd.bdilab.iotplatform.controller.response.ResponseResult;
-import edu.xd.bdilab.iotplatform.dao.User;
+import edu.xd.bdilab.iotplatform.dao.auth.User;
 import edu.xd.bdilab.iotplatform.service.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

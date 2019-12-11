@@ -1,11 +1,10 @@
 package edu.xd.bdilab.iotplatform.service.user.impl;
 
-import edu.xd.bdilab.iotplatform.dao.User;
-import edu.xd.bdilab.iotplatform.dao.UserRoleRelation;
+import edu.xd.bdilab.iotplatform.dao.auth.User;
+import edu.xd.bdilab.iotplatform.dao.auth.UserRoleRelation;
 import edu.xd.bdilab.iotplatform.mapper.UserMapper;
 import edu.xd.bdilab.iotplatform.mapper.UserRoleRelationMapper;
 import edu.xd.bdilab.iotplatform.service.user.UserService;
-import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

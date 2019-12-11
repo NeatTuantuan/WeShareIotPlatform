@@ -1,6 +1,6 @@
 package edu.xd.bdilab.iotplatform.service.user;
 
-import edu.xd.bdilab.iotplatform.dao.User;
+import edu.xd.bdilab.iotplatform.dao.auth.User;
 import org.springframework.stereotype.Service;
 
 /**
