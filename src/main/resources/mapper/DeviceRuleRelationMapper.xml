@@ -10,15 +10,25 @@
         from device_rule_relation
     </select>
 
+    <select id="selectRelationByDeviceId" parameterType = "java.lang.String" resultType="edu.xd.bdilab.iotplatform.dao.rule.DeviceRuleRelation">
+        select
+            id as id,
+            fk_device_id as fkDeviceId,
+            fk_rule_id as fkRuleId,
+            rule_classification as ruleClassification
+        from device_rule_relation where fk_device_id = #{fkDeviceId}
+    </select>
+
 
     <insert id="insertDeviceRuleRelation" useGeneratedKeys="true" keyProperty="id" parameterType="edu.xd.bdilab.iotplatform.dao.rule.DeviceRuleRelation">
         insert into device_rule_relation (fk_device_id, fk_rule_id, rule_classification)
         values (#{fkDeviceId}, #{fkRuleId},#{ruleClassification})
     </insert>
 
-    <delete id="deleteById" parameterType="int">
-        delete from device_state_rule
-        where id = #{id}
+
+    <delete id="deleteByDeviceRuleVO" parameterType="edu.xd.bdilab.iotplatform.vo.DeviceRuleRelationVO">
+        delete from device_rule_relation
+        where fk_device_id = #{fkDeviceId} and fk_rule_id = #{fkRuleId} and rule_classification = #{ruleClassification}
     </delete>
 
 

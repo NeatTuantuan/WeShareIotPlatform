@@ -22,6 +22,14 @@ public class DeviceRuleRelationVO {
     private int fkRuleId;
     /**
      * 规则种类
+     * 0-设备状态告警规则
+     * 1-设备阈值告警规则
      */
     private int ruleClassification;
+
+    public DeviceRuleRelationVO(String fkDeviceId,int fkRuleId,int ruleClassification){
+        this.fkRuleId = fkRuleId;
+        this.fkDeviceId = fkDeviceId;
+        this.ruleClassification = ruleClassification;
+    }
 }

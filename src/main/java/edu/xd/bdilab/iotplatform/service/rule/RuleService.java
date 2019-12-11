@@ -2,6 +2,7 @@ package edu.xd.bdilab.iotplatform.service.rule;
 
 import edu.xd.bdilab.iotplatform.dao.rule.DeviceRuleRelation;
 import edu.xd.bdilab.iotplatform.dao.rule.Rule;
+import edu.xd.bdilab.iotplatform.vo.DeviceRuleRelationVO;
 
 import java.util.List;
 import java.util.Map;
@@ -19,10 +20,17 @@ public interface RuleService {
 
     /**
      * 删除规则
-     * @param ruleMap
      * @return
      */
-    int deleteRules(Map<String, Object> ruleMap);
+    int deleteRules(int ruleId, int ruleClassification);
+
+    //////////////////////////////////////////////////
+    /**
+     * 删除设备绑定规则
+     * @param deviceRuleRelationVO
+     * @return
+     */
+    int deleteByDeviceRuleVO(DeviceRuleRelationVO deviceRuleRelationVO);
 
     /**
      * 添加设备规则关系
@@ -38,6 +46,12 @@ public interface RuleService {
     List<DeviceRuleRelation> selectAllRelation();
 
 
+    /**
+     * 根据设备id查找关系
+     * @param fkDeviceId
+     * @return
+     */
+    List<DeviceRuleRelation> selectRelationByDeviceId(String fkDeviceId);
 
 //    int updateRules();
 

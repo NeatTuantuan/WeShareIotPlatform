@@ -8,12 +8,14 @@ import edu.xd.bdilab.iotplatform.mapper.DeviceRuleRelationMapper;
 import edu.xd.bdilab.iotplatform.mapper.DeviceStateRuleMapper;
 import edu.xd.bdilab.iotplatform.mapper.DeviceThresholdRuleMapper;
 import edu.xd.bdilab.iotplatform.service.rule.RuleService;
+import edu.xd.bdilab.iotplatform.vo.DeviceRuleRelationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.ObjIntConsumer;
 
 /**
  * @ClassName RuleServiceImpl
@@ -54,27 +56,39 @@ public class RuleServiceImpl implements RuleService {
      */
     @Override
     public int addRules(Map<String, Object> ruleMap){
-        if (ruleMap.get("resultType") == new Integer(1)){
-            return deviceStateRuleMapper.insertDeviceStateRule((DeviceStateRule) ruleMap.get("ruleInstance"));
+        HashMap hashMap = (HashMap) ruleMap.get("ruleInstance");
+        if (ruleMap.get("resultType") .equals("1")){
+            DeviceStateRule deviceStateRule = new DeviceStateRule();
+            deviceStateRule.setRuleType((Integer) hashMap.get("ruleType"));
+            deviceStateRule.setOfflineThreshold((Integer) hashMap.get("offlineThreshold"));
+
+            return deviceStateRuleMapper.insertDeviceStateRule(deviceStateRule);
         }else {
-            return deviceThresholdRuleMapper.insertDeviceThresholdRule((DeviceThresholdRule) ruleMap.get("ruleInstance"));
+            DeviceThresholdRule deviceThresholdRule = new DeviceThresholdRule();
+            deviceThresholdRule.setFkProductId((String)hashMap.get("fkProductId"));
+            deviceThresholdRule.setRuleType((Integer) hashMap.get("ruleType"));
+            deviceThresholdRule.setGeneralLevel((Integer) hashMap.get("generalLevel"));
+            deviceThresholdRule.setHeavyLevel((Integer) hashMap.get("heavyLevel"));
+            deviceThresholdRule.setSeriousLevel((Integer) hashMap.get("seriousLevel"));
+
+            return deviceThresholdRuleMapper.insertDeviceThresholdRule(deviceThresholdRule);
         }
     }
 
-    /**
-     * 删除规则
-     * @param ruleMap
-     * @return
-     */
     @Override
-    public int deleteRules(Map<String, Object> ruleMap) {
-//        if (ruleMap.get("resultType") == new Integer(1)){
-//            return deviceStateRuleMapper.deleteById((DeviceStateRule) ruleMap.get("ruleInstance"));
-//        }else {
-//            return deviceThresholdRuleMapper.insertDeviceThresholdRule((DeviceThresholdRule) ruleMap.get("ruleInstance"));
-//        }
-        return 0;
+    public int deleteRules(int ruleId, int ruleClassification) {
+        if (ruleClassification == 0){
+            return deviceStateRuleMapper.deleteById(ruleId);
+        }else {
+            return deviceThresholdRuleMapper.deleteById(ruleId);
+        }
     }
+
+    @Override
+    public int deleteByDeviceRuleVO(DeviceRuleRelationVO deviceRuleRelationVO) {
+        return deviceRuleRelationMapper.deleteByDeviceRuleVO(deviceRuleRelationVO);
+    }
+
 
     @Override
     public int addDeviceRuleRelation(DeviceRuleRelation deviceRuleRelation) {
@@ -84,5 +98,10 @@ public class RuleServiceImpl implements RuleService {
     @Override
     public List<DeviceRuleRelation> selectAllRelation() {
         return deviceRuleRelationMapper.selectAllRelation();
+    }
+
+    @Override
+    public List<DeviceRuleRelation> selectRelationByDeviceId(String fkDeviceId) {
+        return deviceRuleRelationMapper.selectRelationByDeviceId(fkDeviceId);
     }
 }
