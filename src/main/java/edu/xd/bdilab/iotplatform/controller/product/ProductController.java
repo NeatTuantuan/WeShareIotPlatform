@@ -1,18 +1,23 @@
 package edu.xd.bdilab.iotplatform.controller.product;
 
 import edu.xd.bdilab.iotplatform.controller.response.ResponseResult;
+import edu.xd.bdilab.iotplatform.dao.Category;
+
 import edu.xd.bdilab.iotplatform.dao.ProductInfo;
+
 import edu.xd.bdilab.iotplatform.service.device.DeviceService;
+import edu.xd.bdilab.iotplatform.service.device.CategoryService;
 import edu.xd.bdilab.iotplatform.service.product.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +39,9 @@ public class ProductController {
     ProductService productService;
     @Autowired
     ResponseResult responseResult;
+    @Autowired
+    CategoryService categoryService;
+
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -182,4 +190,8 @@ public class ProductController {
         ResponseResult responseResult = new ResponseResult(true,"001","统计结果成功",map);
         return responseResult;
     }
+
+
+
 }
+
