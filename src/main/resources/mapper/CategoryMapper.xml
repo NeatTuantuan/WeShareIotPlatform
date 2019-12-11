@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.xd.bdilab.iotplatform.mapper.CategoryMapper">
+    <resultMap id="BaseResultMap" type="edu.xd.bdilab.iotplatform.dao.Category">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="main_title" jdbcType="INTEGER" property="mainTitle" />
+        <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+    </resultMap>
+    <resultMap id="MainTitleMap" type="java.lang.Integer">
+        <result column="main_title" jdbcType="INTEGER" property="mainTitle"/>
+    </resultMap>
+    <resultMap id="SubTitleMap" type="java.lang.String">
+        <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+    </resultMap>
+    <select id="selectById" parameterType="java.lang.Integer" resultType="edu.xd.bdilab.iotplatform.dao.Category">
+        select id,
+        main_title as mainTitle,
+        sub_title as subTitle
+        from category
+        where id = #{id}
+    </select>
+    <insert id="insertSelective" parameterType="edu.xd.bdilab.iotplatform.dao.Category">
+        insert  into category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="mainTitle != null">
+                main_title,
+            </if>
+            <if test="subTitle != null">
+                sub_title,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="mainTitle != null">
+                #{mainTitle,jdbcType=INTEGER},
+            </if>
+            <if test="subTitle != null">
+                #{subTitle,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="edu.xd.bdilab.iotplatform.dao.Category">
+        update category
+        <set>
+            <if test="mainTitle != null">
+                main_title = #{mainTitle,jdbcType=INTEGER},
+            </if>
+            <if test="subTitle != null">
+                sub_title = #{subTitle,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id= #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByMainTitle" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select *
+        from category
+        where main_title = #{mainTitle}
+    </select>
+    <select id="selectBySubTitle" parameterType="java.lang.String" resultType="edu.xd.bdilab.iotplatform.dao.Category">
+        select
+        id as id,
+        main_title as mainTitle,
+        sub_title as subTitle
+        from category
+        where sub_title = #{subTitle}
+    </select>
+    <select id="selectMainTitle" resultMap="MainTitleMap">
+        select distinct main_title
+        from category
+    </select>
+    <select id="selectSubTitleByMainTitle" parameterType="java.lang.String" resultMap="SubTitleMap">
+        select sub_title
+        from category
+        where main_title=#{mainTitle}
+    </select>
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from category
+        where id = #{id}
+    </delete>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from category
+    </select>
+
+</mapper>

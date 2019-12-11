@@ -66,6 +66,7 @@ public interface ProductService {
     Map<String,Object> productInfoStatistics();
 
 
+
     /**
      * 统计每个产品的数据量
      * @return

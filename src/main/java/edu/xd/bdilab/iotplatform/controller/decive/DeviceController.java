@@ -1,6 +1,7 @@
 package edu.xd.bdilab.iotplatform.controller.decive;
 
 
+import edu.xd.bdilab.iotplatform.controller.product.ProductCode;
 import edu.xd.bdilab.iotplatform.controller.response.MetaData;
 import edu.xd.bdilab.iotplatform.controller.response.ResponseResult;
 import edu.xd.bdilab.iotplatform.dao.*;
@@ -22,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -44,6 +46,8 @@ public class DeviceController {
     DeviceInfoService deviceInfoService;
     @Autowired
     SwitchLogService switchLogService;
+    @Autowired
+    CategoryService categoryService;
 
 
     RedisUtil redisUtil = new RedisUtil();
@@ -370,5 +374,189 @@ public class DeviceController {
         Map<String, Integer> map = deviceService.deviceInfoStatistics();
         ResponseResult responseResult = new ResponseResult(true,"001","统计设备信息成功",map);
         return responseResult;
+    }
+
+    @PostMapping("device/addDeviceClassification")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "deviceId",value = "设备id"),
+            @ApiImplicitParam(name = "categoryId",value = "类别id")}
+
+    )
+    @ApiOperation(value = "给设备添加类别属性")
+    @Transactional
+    public ResponseResult addDeviceClassification(@RequestParam("deviceId") String deviceId,@RequestParam("categoryId") int categoryId){
+        DeviceClassification deviceClassification = new DeviceClassification();
+        deviceClassification.setFkDeviceId(deviceId);
+        deviceClassification.setFkCategoryId(categoryId);
+
+        int res = deviceInfoService.insertDeviceClassification(deviceClassification);
+        //添加成功返回产品信息和对应类别
+        DeviceCategory deviceCategory = new DeviceCategory();
+        //查询设备
+        DeviceInfo deviceInfo = deviceInfoService.selectById(deviceId);
+        //查询类别
+        Category category = categoryService.selectCategoryById(categoryId);
+        //copy属性
+        BeanUtils.copyProperties(deviceInfo,deviceCategory);
+        BeanUtils.copyProperties(category,deviceCategory);
+
+        if (res>0){
+            responseResult.setSuccess(true);
+            responseResult.setData(deviceCategory);
+            responseResult.setCode(DeviceCode.ADD_DEVICE_CLASSIFICATION_SUCCESS.getCode());
+            responseResult.setMessage(DeviceCode.ADD_DEVICE_CLASSIFICATION_SUCCESS.getMessage());
+            return responseResult;
+        }else {
+            responseResult.setSuccess(false);
+            responseResult.setCode(DeviceCode.ADD_DEVICE_CLASSIFICATION_FAILURE.getCode());
+            responseResult.setMessage(DeviceCode.ADD_DEVICE_CLASSIFICATION_FAILURE.getMessage());
+            return responseResult;
+        }
+    }
+
+    @PostMapping("device/addCategory")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "mainTitle",value = "主类别"),
+            @ApiImplicitParam(name = "subTitle",value = "从类别")
+    })
+    @ApiOperation(value = "自定义类别")
+    public ResponseResult addCategory(@RequestParam(value = "mainTitle") int mainTitle,@RequestParam(value = "subTitle")String subTitle){
+        Category category = new Category();
+        category.setMainTitle(mainTitle);
+        category.setSubTitle(subTitle);
+
+        int res = categoryService.addCategory(category);
+        category = categoryService.selectBySubTitle(subTitle);
+        if (res>0){
+            responseResult.setSuccess(true);
+            responseResult.setData(category);
+            responseResult.setCode(DeviceCode.ADD_CATEGORY_SUCCESS.getCode());
+            responseResult.setMessage(DeviceCode.ADD_CATEGORY_SUCCESS.getMessage());
+            return responseResult;
+        }else {
+            responseResult.setSuccess(false);
+            responseResult.setCode(DeviceCode.ADD_CATEGORY_FAILURE.getCode());
+            responseResult.setMessage(DeviceCode.ADD_CATEGORY_FAILURE.getMessage());
+            return responseResult;
+        }
+    }
+
+
+    @GetMapping("device/updateCategory")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "categoryId",value = "类别Id"),
+            @ApiImplicitParam(name = "subTitle",value = "从类别")
+    })
+    @ApiOperation(value = "更新类别")
+    public ResponseResult updateCategory(@RequestParam(value = "categoryId") int categoryId,@RequestParam("subTitle") String subTitle){
+
+        Category category = categoryService.selectCategoryById(categoryId);
+        category.setSubTitle(subTitle);
+        int res = categoryService.updateCategory(category);
+        if (res>0){
+            responseResult.setSuccess(true);
+            responseResult.setCode(DeviceCode.UPDATE_DEVICE_STATE_SUCCESS.getCode());
+            responseResult.setMessage(DeviceCode.UPDATE_CATEGORY_SUCCESS.getMessage());
+            return responseResult;
+        }else {
+            responseResult.setSuccess(false);
+            responseResult.setCode(DeviceCode.UPDATE_DEVICE_STATE_SUCCESS.getCode());
+            responseResult.setMessage(DeviceCode.UPDATE_CATEGORY_FAILURE.getMessage());
+            return responseResult;
+        }
+
+    }
+
+    @PostMapping("device/deleteCategory")
+    @ApiImplicitParam(name = "categoryId",value = "类别id")
+    @ApiOperation(value ="删除类别" )
+    public ResponseResult deleteCategory(@RequestParam(value = "categoryId")int categoryId){
+        //删除该类别还需删除和该类别相关的设备属性列表,由于外键需要先删除device_classification
+        deviceInfoService.deleteByCategoryId(categoryId);
+        //再删除category表
+        int res = categoryService.delete(categoryId);
+
+        if (res>0){
+            responseResult.setSuccess(true);
+            responseResult.setCode(DeviceCode.DELETE_DEVICE_SUCCESS.getCode());
+            responseResult.setMessage(DeviceCode.DELETE_CATEGORY_SUCCESS.getMessage());
+            return responseResult;
+        }else {
+            responseResult.setSuccess(false);
+            responseResult.setCode(DeviceCode.DELETE_CATEGORY_FAILURE.getCode());
+            responseResult.setMessage(DeviceCode.DELETE_CATEGORY_FAILURE.getMessage());
+            return responseResult;
+        }
+    }
+
+    @PostMapping("device/getAllCategory")
+    @ApiOperation(value = "返回所有类别属性")
+    public ResponseResult getAllCategory(){
+        List<List<Category>> allCategoryList = new ArrayList<>();
+        //先拿到所有mainTitle
+        List<Integer> mainTitleList =categoryService.getAllMainTitle();
+        for (int mainTitle:mainTitleList){
+            List<Category> categoryList = categoryService.selectByMainTitle(mainTitle);
+            allCategoryList.add(categoryList);
+        }
+
+        if (allCategoryList.size()>0){
+            responseResult.setSuccess(true);
+            responseResult.setData(allCategoryList);
+            responseResult.setCode(DeviceCode.SELECT_ALL_CATEGORY_SUCCESS.getCode());
+            responseResult.setMessage(DeviceCode.SELECT_ALL_CATEGORY_SUCCESS.getMessage());
+            return responseResult;
+        }else {
+            responseResult.setSuccess(true);
+            responseResult.setCode(DeviceCode.SELECT_ALL_CATEGORY_FAILURE.getCode());
+            responseResult.setMessage(DeviceCode.SELECT_ALL_CATEGORY_FAILURE.getMessage());
+            return responseResult;
+        }
+    }
+
+    @PostMapping("device/getDeviceAllCategory")
+    @ApiImplicitParam(name = "deviceId",value = "设备id")
+    @ApiOperation(value = "返回设备所有属性")
+    public ResponseResult getDeviceAllCategory(@RequestParam(value = "deviceId")String deviceId){
+        //通过设备id拿到所有category id
+        List<Integer> categoryIdList = deviceInfoService.getAllCategory(deviceId);
+
+        DeviceInfo deviceInfo = deviceInfoService.selectById(deviceId);
+        List<DeviceCategory> deviceCategoryList = new ArrayList<>();
+        for (Integer categoryId:categoryIdList){
+            DeviceCategory deviceCategory = new DeviceCategory();
+            BeanUtils.copyProperties(deviceInfo,deviceCategory);
+            Category category = categoryService.selectCategoryById(categoryId);
+            BeanUtils.copyProperties(category,deviceCategory);
+            deviceCategoryList.add(deviceCategory);
+        }
+        responseResult.setSuccess(true);
+        responseResult.setData(deviceCategoryList);
+        responseResult.setCode(DeviceCode.SELECT_ALL_DEVICE_CATEGORY_SUCCESS.getCode());
+        responseResult.setMessage(DeviceCode.SELECT_ALL_DEVICE_CATEGORY_SUCCESS.getMessage());
+
+        return responseResult;
+    }
+
+    @PostMapping("device/deleteDeviceCategory")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "deviceId",value = "设备id"),
+            @ApiImplicitParam(name = "categoryId",value = "类别id")
+    })
+    @ApiOperation(value = "删除一条设备类别属性")
+    public ResponseResult deleteDeviceCategory(@RequestParam(value = "deviceId")String deviceId,
+                                               @RequestParam(value = "categoryId")int categoryId){
+        int res = deviceInfoService.deleteDeviceCategory(deviceId,categoryId);
+        if (res>0) {
+            responseResult.setSuccess(true);
+            responseResult.setCode(DeviceCode.DELETE_DEVICE_CLASSIFICATION_SUCCESS.getCode());
+            responseResult.setMessage(DeviceCode.DELETE_DEVICE_CLASSIFICATION_SUCCESS.getMessage());
+            return responseResult;
+        }else {
+            responseResult.setSuccess(false);
+            responseResult.setCode(DeviceCode.DELETE_DEVICE_CLASSIFICATION_FAILURE.getCode());
+            responseResult.setMessage(DeviceCode.DELETE_DEVICE_CLASSIFICATION_FAILURE.getMessage());
+            return responseResult;
+        }
     }
 }
