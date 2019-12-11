@@ -51,7 +51,7 @@ public class RuleController {
     @PostMapping(value = "rule/deleteRules")
     @ApiOperation(value = "删除规则")
     public ResponseResult deleteRules(@RequestParam int ruleId,@RequestParam int ruleClassification){
-        return new ResponseResult(true,"001","添加规则成功",ruleService.deleteRules(ruleId,ruleClassification));;
+        return new ResponseResult(true,"001","添加规则成功",ruleService.deleteRules(ruleId,ruleClassification));
     }
 
     @PostMapping(value = "rule/deleteDeviceRules")
