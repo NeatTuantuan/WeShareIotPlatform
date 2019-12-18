@@ -74,18 +74,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .formLogin() //开启登录
 //                .loginProcessingUrl("/login");
-                .loginPage("/login");
-//                //.failureUrl("/login?error")
-//                .successHandler(authenticationSuccessHandler)
-//
-//                .successForwardUrl("/index") //登录成功的URL
-//                .failureHandler(authenticationFailureHandler);
-//
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .logoutSuccessHandler(logoutSuccessHandler)
-//                .permitAll();
+                .loginPage("/user/login")
+                .failureUrl("/login?error")
+                .successHandler(authenticationSuccessHandler)
+
+                .successForwardUrl("/index") //登录成功的URL
+                .failureHandler(authenticationFailureHandler)
+
+                .permitAll()
+                .and()
+                .logout()
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .permitAll();
 
 
     }
