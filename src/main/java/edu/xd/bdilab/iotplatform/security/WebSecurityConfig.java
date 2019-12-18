@@ -68,6 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/swagger-ui.html","/swagger-resources/**","/images/**","/webjars/**","/v2/api-docs","/configuration/ui","/configuration/security","/configuration/security").permitAll()
                 .antMatchers("/product/**","/user/**","/rule/**","/device/**").permitAll()
+                .antMatchers("/license/**","/auth/**").permitAll()
 
                 .anyRequest().authenticated()//其他URL需要身份认证
                 .and()
@@ -75,17 +76,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin() //开启登录
 //                .loginProcessingUrl("/login");
                 .loginPage("/user/login")
-                .failureUrl("/login?error")
                 .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler);
 
-                .successForwardUrl("/index") //登录成功的URL
-                .failureHandler(authenticationFailureHandler)
+//                .failureUrl("/login?error")
+//                .successForwardUrl("/home"); //登录成功的URL
 
-                .permitAll()
-                .and()
-                .logout()
-                .logoutSuccessHandler(logoutSuccessHandler)
-                .permitAll();
+
+//                .permitAll()
+//                .and()
+//                .logout()
+//                .logoutSuccessHandler(logoutSuccessHandler)
+//                .permitAll();
 
 
     }

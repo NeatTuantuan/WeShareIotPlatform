@@ -29,6 +29,8 @@ public class LicenseServiceImpl implements LicenseService {
     private String certificatePath;
     @Value("${checkfile.path}")
     private String checkFilePath;
+    @Value("${weshare.product.type}")
+    private String productType;
 
     @Override
     public boolean licenseFileExistenceCheck() {
@@ -88,6 +90,14 @@ public class LicenseServiceImpl implements LicenseService {
         }
 
         data.put("machineCodeCheck","true");
+        //检查软件版本
+        if(license.getProducts()==null||!license.getProducts().contains(productType)){
+            data.put("isProductIncluded","false");
+            data.put("isAccessible","false");
+            return data;
+        }
+        data.put("isProductIncluded","true");
+
         //检查是否为无限版本
         if(license.getIsUnlimited() == 1){
             data.put("isUnlimited","true");
@@ -104,6 +114,8 @@ public class LicenseServiceImpl implements LicenseService {
         }
         data.put("isExpired","false");
         data.put("expireDate",license.getExpireDate().toString());
+        data.put("products",license.getProducts().toString());
+
         data.put("isAccessible","true");
         return data;
     }

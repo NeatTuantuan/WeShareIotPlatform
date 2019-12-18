@@ -376,6 +376,7 @@ public class DeviceController {
         return responseResult;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @PostMapping("device/addDeviceClassification")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "deviceId",value = "设备id"),
