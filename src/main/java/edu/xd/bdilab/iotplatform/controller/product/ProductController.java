@@ -67,7 +67,7 @@ public class ProductController {
         responseResult.setCode(ProductCode.DELETE_PRODUCT_SUCCESS.getCode());
         responseResult.setMessage(ProductCode.DELETE_PRODUCT_SUCCESS.getMessage());
 
-        return null;
+        return responseResult;
     }
 
     @PostMapping(value = "product/modifyProduct")
