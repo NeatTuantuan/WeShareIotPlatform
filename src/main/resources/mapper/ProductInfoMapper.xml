@@ -174,8 +174,6 @@
     where product_id = #{productId,jdbcType=VARCHAR}
   </update>
 
-
-
   <select id="selectAllProductByKeyWord" resultMap="BaseResultMap">
     select *
     from product_info

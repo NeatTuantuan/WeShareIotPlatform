@@ -1,7 +1,5 @@
 package edu.xd.bdilab.iotplatform.controller.decive;
 
-
-import edu.xd.bdilab.iotplatform.controller.product.ProductCode;
 import edu.xd.bdilab.iotplatform.controller.response.MetaData;
 import edu.xd.bdilab.iotplatform.controller.response.ResponseResult;
 import edu.xd.bdilab.iotplatform.dao.*;
@@ -18,7 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -376,7 +374,7 @@ public class DeviceController {
         return responseResult;
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     @PostMapping("device/addDeviceClassification")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "deviceId",value = "设备id"),
