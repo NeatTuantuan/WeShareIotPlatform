@@ -1,8 +1,10 @@
 package edu.xd.bdilab.iotplatform.service.product;
 
 import edu.xd.bdilab.iotplatform.dao.ProductInfo;
+import io.swagger.models.auth.In;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
     /**
@@ -57,5 +59,18 @@ public interface ProductService {
      */
     ProductInfo selectByProductName(String productName);
 
+    /**
+     * 统计信息统计，一共有多少产品，每个产品下有多少设备
+     * @return
+     */
+    Map<String,Object> productInfoStatistics();
+
+
+
+    /**
+     * 统计每个产品的数据量
+     * @return
+     */
+    Map<String, Integer> productDataStatistics();
 
 }

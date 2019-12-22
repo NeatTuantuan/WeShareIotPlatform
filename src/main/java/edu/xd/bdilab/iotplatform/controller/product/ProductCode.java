@@ -18,6 +18,7 @@ public enum ProductCode {
     UPDATE_PRODUCT_FAILURE("02007","更新产品失败"),
     DELETE_PRODUCT_SUCCESS("02008", "删除产品成功"),
     DELETE_PRODUCT_FAILURE("02009", "删除产品失败"),
+
     ;
 
     private String code;

@@ -1,13 +1,14 @@
 package edu.xd.bdilab.iotplatform.controller.user;
 
 import edu.xd.bdilab.iotplatform.controller.response.ResponseResult;
-import edu.xd.bdilab.iotplatform.dao.User;
+import edu.xd.bdilab.iotplatform.dao.auth.User;
 import edu.xd.bdilab.iotplatform.service.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,7 +38,10 @@ public class UserController {
     public ResponseResult userRegister(@RequestParam String userName, @RequestParam String password){
         User user = new User();
         user.setUserName(userName);
-        user.setPassword(password);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(password));
+
         if (userService.userRegister(user) == 0){
             return new ResponseResult(false,"001","该用户已存在",null);
         }else {

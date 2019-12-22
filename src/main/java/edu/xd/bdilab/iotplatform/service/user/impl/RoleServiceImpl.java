@@ -1,6 +1,6 @@
 package edu.xd.bdilab.iotplatform.service.user.impl;
 
-import edu.xd.bdilab.iotplatform.dao.Role;
+import edu.xd.bdilab.iotplatform.dao.auth.Role;
 import edu.xd.bdilab.iotplatform.mapper.RoleMapper;
 import edu.xd.bdilab.iotplatform.service.user.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;

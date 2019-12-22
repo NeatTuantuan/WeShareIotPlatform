@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.xd.bdilab.iotplatform.mapper.DeviceRuleRelationMapper">
+    <select id="selectAllRelation" resultType="edu.xd.bdilab.iotplatform.dao.rule.DeviceRuleRelation">
+        select
+            id as id,
+            fk_device_id as fkDeviceId,
+            fk_rule_id as fkRuleId,
+            rule_classification as ruleClassification
+        from device_rule_relation
+    </select>
+
+    <select id="selectRelationByDeviceId" parameterType = "java.lang.String" resultType="edu.xd.bdilab.iotplatform.dao.rule.DeviceRuleRelation">
+        select
+            id as id,
+            fk_device_id as fkDeviceId,
+            fk_rule_id as fkRuleId,
+            rule_classification as ruleClassification
+        from device_rule_relation where fk_device_id = #{fkDeviceId}
+    </select>
+
+
+    <insert id="insertDeviceRuleRelation" useGeneratedKeys="true" keyProperty="id" parameterType="edu.xd.bdilab.iotplatform.dao.rule.DeviceRuleRelation">
+        insert into device_rule_relation (fk_device_id, fk_rule_id, rule_classification)
+        values (#{fkDeviceId}, #{fkRuleId},#{ruleClassification})
+    </insert>
+
+
+    <delete id="deleteByDeviceRuleVO" parameterType="edu.xd.bdilab.iotplatform.vo.DeviceRuleRelationVO">
+        delete from device_rule_relation
+        where fk_device_id = #{fkDeviceId} and fk_rule_id = #{fkRuleId} and rule_classification = #{ruleClassification}
+    </delete>
+
+
+</mapper>

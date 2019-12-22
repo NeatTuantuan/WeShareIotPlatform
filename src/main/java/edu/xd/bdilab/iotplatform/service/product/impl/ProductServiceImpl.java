@@ -1,14 +1,19 @@
 package edu.xd.bdilab.iotplatform.service.product.impl;
 
 import edu.xd.bdilab.iotplatform.dao.DeviceInfo;
+
 import edu.xd.bdilab.iotplatform.dao.ProductInfo;
+import edu.xd.bdilab.iotplatform.mapper.DeviceDataMapper;
 import edu.xd.bdilab.iotplatform.mapper.DeviceInfoMapper;
+
 import edu.xd.bdilab.iotplatform.mapper.ProductInfoMapper;
 import edu.xd.bdilab.iotplatform.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -17,6 +22,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private DeviceInfoMapper deviceInfoMapper;
+    @Autowired
+    private DeviceDataMapper deviceDataMapper;
 
     @Override
     public int addProduct(ProductInfo productInfo) {
@@ -66,6 +73,59 @@ public class ProductServiceImpl implements ProductService {
     public ProductInfo selectByProductName(String productName) {
         return productInfoMapper.selectByProductName(productName);
     }
+
+    @Override
+    public Map<String, Object> productInfoStatistics() {
+        Map<String, Object> map = new HashMap<>();
+        String name = null;
+        List<ProductInfo> productInfoList = this.getAllProductsInfo();
+        map.put("productCount",productInfoList.size());
+
+        if (productInfoList.size() == 0){
+            return map;
+        }
+
+        for (ProductInfo productInfo : productInfoList){
+            name = productInfo.getProductName();
+            map.put(name,
+                    deviceInfoMapper.selectByProduct(
+                            productInfo.getProductId()
+                    ).size()
+            );
+        }
+
+        return map;
+
+
+    }
+
+    @Override
+    public Map<String, Integer> productDataStatistics() {
+        Map<String, Integer> map = new HashMap<>();
+
+        String name = null;
+        List<ProductInfo> productInfoList = this.getAllProductsInfo();
+
+        if (productInfoList.size() == 0){
+            return map;
+        }
+
+        for (ProductInfo productInfo : productInfoList){
+            name = productInfo.getProductName();
+            int count = 0;
+            List<DeviceInfo> list = deviceInfoMapper.selectByProduct(productInfo.getProductId());
+
+            for (DeviceInfo deviceInfo : list){
+                count += deviceDataMapper.selectAll(deviceInfo.getGetwayId()).size();
+            }
+
+            map.put(name, count);
+        }
+
+        return map;
+    }
+
+
 
 
 }

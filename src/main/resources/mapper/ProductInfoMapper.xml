@@ -8,7 +8,7 @@
     <result column="product_type" jdbcType="VARCHAR" property="productType" />
     <result column="product_manufacturer" jdbcType="VARCHAR" property="productManufacturer" />
     <result column="product_desc" jdbcType="VARCHAR" property="productDesc" />
-    <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="product_classification" jdbcType="TINYINT" property="productClassification" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -63,7 +63,7 @@
       create_time, product_classification)
     values (#{productId,jdbcType=VARCHAR}, #{fkUserId,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR}, 
       #{productType,jdbcType=VARCHAR}, #{productManufacturer,jdbcType=VARCHAR}, #{productDesc,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=DATE}, #{productClassification,jdbcType=TINYINT})
+      #{createTime,jdbcType=TIMESTAMP}, #{productClassification,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="edu.xd.bdilab.iotplatform.dao.ProductInfo">
     <!--
@@ -118,7 +118,7 @@
         #{productDesc,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=DATE},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="productClassification != null">
         #{productClassification,jdbcType=TINYINT},
@@ -149,7 +149,7 @@
         product_desc = #{productDesc,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=DATE},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="productClassification != null">
         product_classification = #{productClassification,jdbcType=TINYINT},
@@ -169,12 +169,10 @@
       product_type = #{productType,jdbcType=VARCHAR},
       product_manufacturer = #{productManufacturer,jdbcType=VARCHAR},
       product_desc = #{productDesc,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=DATE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       product_classification = #{productClassification,jdbcType=TINYINT}
     where product_id = #{productId,jdbcType=VARCHAR}
   </update>
-
-
 
   <select id="selectAllProductByKeyWord" resultMap="BaseResultMap">
     select *

@@ -76,4 +76,11 @@ public class ProductServiceImplTest {
             System.out.println(productInfo.getProductName());
         }
     }
+
+    @Test
+    public void productInfoStatistics() {
+        System.out.println(productService.productInfoStatistics());
+    }
+
+
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.xd.bdilab.iotplatform.mapper.UserMapper">
-  <select id="selectByUserName" parameterType="String" resultType="edu.xd.bdilab.iotplatform.dao.User">
+  <select id="selectByUserName" parameterType="String" resultType="edu.xd.bdilab.iotplatform.dao.auth.User">
         select
          user_id as userId,
          user_name as userName,
@@ -10,7 +10,7 @@
   </select>
 
 
-    <insert id="insertUser" useGeneratedKeys="true" keyProperty="userId" parameterType="edu.xd.bdilab.iotplatform.dao.User">
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="userId" parameterType="edu.xd.bdilab.iotplatform.dao.auth.User">
         insert into user (user_name, password)
         values (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
     </insert>

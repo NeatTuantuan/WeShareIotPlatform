@@ -1,6 +1,7 @@
 package edu.xd.bdilab.iotplatform.dao.auth;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Decription TODO
@@ -12,12 +13,21 @@ public class License {
     private Integer licenseNum;
     private String authCode;
     private String machineCode;
+    private List<Integer> products;
     private Date expireDate;
     private String sign;
     private Integer isUnlimited;
 
     public Date getExpireDate() {
         return expireDate;
+    }
+
+    public List<Integer> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Integer> products) {
+        this.products = products;
     }
 
     public Integer getIsUnlimited() {

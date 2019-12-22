@@ -24,7 +24,8 @@ import java.io.IOException;
 public class AuthenticationSuccessHandler implements org.springframework.security.web.authentication.AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-        MetaData metaData = new MetaData(false, SecurityCode.LOGIN_SUCCESSFUL.getCode(),SecurityCode.LOGIN_SUCCESSFUL.getMessage());
+//        MetaData metaData = new MetaData(true, SecurityCode.LOGIN_SUCCESSFUL.getCode(),SecurityCode.LOGIN_SUCCESSFUL.getMessage());
+        MetaData metaData = new MetaData(true,"001","登录成功");
         ResponseResult responseResult = new ResponseResult(null,metaData);
 
         httpServletResponse.getWriter().write(JSON.toJSONString(responseResult));

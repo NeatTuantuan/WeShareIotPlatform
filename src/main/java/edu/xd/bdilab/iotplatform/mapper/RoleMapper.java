@@ -1,6 +1,6 @@
 package edu.xd.bdilab.iotplatform.mapper;
 
-import edu.xd.bdilab.iotplatform.dao.Role;
+import edu.xd.bdilab.iotplatform.dao.auth.Role;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 

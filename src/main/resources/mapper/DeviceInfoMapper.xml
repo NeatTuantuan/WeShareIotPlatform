@@ -5,7 +5,7 @@
     <id column="device_id" jdbcType="VARCHAR" property="deviceId" />
     <result column="fk_product_id" jdbcType="VARCHAR" property="fkProductId" />
     <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
-    <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="getway_id" jdbcType="VARCHAR" property="getwayId" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -52,7 +52,7 @@
     insert into device_info (device_id, fk_product_id, device_name, 
       create_time, getway_id)
     values (#{deviceId,jdbcType=VARCHAR}, #{fkProductId,jdbcType=VARCHAR}, #{deviceName,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=DATE}, #{getwayId,jdbcType=VARCHAR})
+      #{createTime,jdbcType=TIMESTAMP}, #{getwayId,jdbcType=VARCHAR})
   </insert>
 
 
@@ -91,7 +91,7 @@
         #{deviceName,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=DATE},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="getwayId != null">
         #{getwayId,jdbcType=VARCHAR},
@@ -134,7 +134,7 @@
     update device_info
     set fk_product_id = #{fkProductId,jdbcType=VARCHAR},
       device_name = #{deviceName,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=DATE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       getway_id = #{getwayId,jdbcType=VARCHAR}
     where device_id = #{deviceId,jdbcType=VARCHAR}
   </update>
@@ -159,6 +159,11 @@
          getway_id as getwayId
      from device_info
   </select>
+
+  <select id="selectCount" parameterType="java.lang.String" resultType="Integer">
+        select count(*)
+        from device_info where fk_product_id = #{fkProductId}
+    </select>
 
 
 </mapper>

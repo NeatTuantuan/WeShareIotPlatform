@@ -58,4 +58,10 @@ public interface DeviceInfoMapper {
      * @return
      */
     List<DeviceInfo> selectAllDevice();
+
+//    /**
+//     * 查看某一产品下有多少设备
+//     * @return
+//     */
+//    int selectCount(int fkProductId);
 }

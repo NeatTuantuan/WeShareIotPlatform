@@ -66,20 +66,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .authenticationEntryPoint(authenticationEntryPoint)
 //                .and()
                 .authorizeRequests()
-                .antMatchers("/login", "/assets/**", "/CSS/**", "/HTML/**", "/JavaScript/**").permitAll()
-                .anyRequest().permitAll();
+                .antMatchers("/swagger-ui.html","/swagger-resources/**","/images/**","/webjars/**","/v2/api-docs","/configuration/ui","/configuration/security","/configuration/security").permitAll()
+//                .antMatchers("/product/**","/user/**","/rule/**","/device/**").permitAll()
+//                .antMatchers("/license/**","/auth/**").permitAll()
 
+                .anyRequest().authenticated()//其他URL需要身份认证
+                .and()
 
-//                .anyRequest().authenticated()//其他URL需要身份认证
-//                .and()
-//
-//                .formLogin() //开启登录
-//                .successHandler(authenticationSuccessHandler)
-//                .loginPage("/login")
+                .formLogin() //开启登录
+//                .loginProcessingUrl("/login");
+                .loginPage("/user/login")
+//                .loginPage("/index.html")
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler);
+
 //                .failureUrl("/login?error")
-//                .successForwardUrl("/index") //登录成功的URL
-//                .failureHandler(authenticationFailureHandler)
-//
+//                .successForwardUrl("/home"); //登录成功的URL
+
+
 //                .permitAll()
 //                .and()
 //                .logout()

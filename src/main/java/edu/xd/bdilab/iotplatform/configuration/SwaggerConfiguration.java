@@ -28,7 +28,7 @@ public class SwaggerConfiguration {
         return new ApiInfoBuilder()
                 .title("Spring Boot中使用Swagger2构建Weshare IOT-Platform APIs")
                 .description("测试api")
-                .termsOfServiceUrl("http://127.0.0.1:8080/")
+                .termsOfServiceUrl("")
                 .version("1.0")
                 .build();
     }

@@ -1,7 +1,7 @@
 package edu.xd.bdilab.iotplatform.service.security;
 
-import edu.xd.bdilab.iotplatform.dao.Role;
-import edu.xd.bdilab.iotplatform.dao.User;
+import edu.xd.bdilab.iotplatform.dao.auth.Role;
+import edu.xd.bdilab.iotplatform.dao.auth.User;
 import edu.xd.bdilab.iotplatform.mapper.RoleMapper;
 import edu.xd.bdilab.iotplatform.mapper.UserMapper;
 import edu.xd.bdilab.iotplatform.mapper.UserRoleRelationMapper;
@@ -17,7 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
