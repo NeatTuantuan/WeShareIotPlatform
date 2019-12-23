@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         exclude = {SecurityAutoConfiguration.class }
 )
 @EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
-@EnableWebMvc
 public class IotplatformApplication {
 
     public static void main(String[] args) {
