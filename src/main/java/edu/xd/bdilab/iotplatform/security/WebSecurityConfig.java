@@ -76,6 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin() //开启登录
 //                .loginProcessingUrl("/login");
                 .loginPage("/user/login")
+//                .loginPage("/index.html")
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler);
 
