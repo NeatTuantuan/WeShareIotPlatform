@@ -40,7 +40,8 @@ public class DeviceDataServiceImpl implements DeviceDataService  {
     @Override
     public Map<String, Object> SelectAllDataByDeviceId(String deviceId) {
         String gatewayId = deviceInfoMapper.selectByPrimaryKey(deviceId).getGetwayId();
-        List<DeviceData> deviceDataList = deviceDataMapper.selectAll(gatewayId);
+        List<DeviceData> deviceDataList = deviceDataMapper.selectTop(gatewayId);
+//        List<DeviceData> deviceDataList = deviceDataMapper.selectAll(gatewayId);
         Map<String, Object> deviceDataMap = new HashMap<>();
         deviceDataMap.put("deviceDataList",deviceDataList);
         deviceDataMap.put("count",deviceDataList.size());

@@ -101,4 +101,10 @@ public class DeviceDataMapperTest {
     public void selectTest(){
         System.out.println(deviceDataMapper.selectById(19).getTimeStamp());
     }
+
+    @Test
+    public void selectTop(){
+        System.out.println(deviceDataMapper.selectTop("@@@864376049817702 "));
+    }
+
 }

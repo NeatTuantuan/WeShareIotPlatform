@@ -43,4 +43,11 @@ public interface DeviceDataMapper {
     int selectCount();
 
     List<DeviceData> selectByParams(Map<String,Object> params);
+
+    /**
+     * 查询前100条数据
+     * @param gatewayId
+     * @return
+     */
+    List<DeviceData> selectTop(@Param("gatewayId")String gatewayId);
 }

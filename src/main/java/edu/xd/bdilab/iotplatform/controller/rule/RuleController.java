@@ -30,6 +30,7 @@ import java.util.Map;
  **/
 @RestController
 @Api(tags = {"规则相关功能"})
+
 public class RuleController {
     @Autowired
     RuleService ruleService;
@@ -81,5 +82,4 @@ public class RuleController {
     public ResponseResult getAllDeviceRuleRelation(@RequestParam String deviceId){
         return new ResponseResult(true,"001","查询所有关系成功",ruleService.selectRelationByDeviceId(deviceId));
     }
-
 }

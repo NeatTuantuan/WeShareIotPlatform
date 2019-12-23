@@ -8,6 +8,7 @@
         <result column="format_data" jdbcType="VARCHAR" property="formatData" />
         <result column="time_stamp" jdbcType="VARCHAR" property="timeStamp"/>
     </resultMap>
+
     <select id="selectById" parameterType="Integer" resultType="edu.xd.bdilab.iotplatform.dao.DeviceData">
         select
          id as id,
@@ -17,6 +18,7 @@
          time_stamp as timeStamp
      from device_data WHERE id=#{id}
   </select>
+
     <insert id="insertSelective" parameterType="edu.xd.bdilab.iotplatform.dao.DeviceData"  useGeneratedKeys="true" >
         insert into device_data
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -69,6 +71,17 @@
         select *
         from device_data
         where gateway_id = #{gatewayId}
+    </select>
+
+    <select id="selectTop" parameterType="java.lang.String" resultType="edu.xd.bdilab.iotplatform.dao.DeviceData">
+        select
+             id as id,
+            gateway_id as gatewayId,
+            meta_data as metaData,
+            format_data as formatData,
+            time_stamp as timeStamp
+        from device_data
+        where gateway_id = #{gatewayId} limit 100
     </select>
 
     <select id="selectRecent" parameterType="java.lang.String" resultType="edu.xd.bdilab.iotplatform.dao.DeviceData">

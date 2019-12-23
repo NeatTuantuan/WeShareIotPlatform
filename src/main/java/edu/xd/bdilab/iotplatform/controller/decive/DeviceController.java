@@ -381,6 +381,7 @@ public class DeviceController {
             @ApiImplicitParam(name = "categoryId",value = "类别id")}
 
     )
+
     @ApiOperation(value = "给设备添加类别属性")
     @Transactional
     public ResponseResult addDeviceClassification(@RequestParam("deviceId") String deviceId,@RequestParam("categoryId") int categoryId){
